@@ -1,0 +1,49 @@
+/*Content Wrapper*/
+#wrapper {
+	height:100vh;
+}
+/*Top Banner*/
+#top_banner {
+	background-color: blue;
+	text-align: center;
+	font-size: 42px;
+	height: 15%;
+}
+/*Panels*/
+#panels {
+	background-color: white;
+	text-align: center;
+	height: 70%;
+}
+#left_panel {
+	background-color: grey;
+}
+#top_right {
+	background-color: green;
+	height: 40%;
+}
+.top_right {
+	width: 100%;
+	text-align: center;
+}
+#bottom_right {
+	background-color: orange;
+	height: 60%;
+}
+.bottom_right {
+	width: 100%;
+	text-align: center;
+}
+/*Bottom Banner*/
+#bottom_banner {
+	background-color: yellow;
+	text-align: center;
+	font-size: 42px;
+	height: 15%;
+}
+html body {
+	background-color: black;
+	overflow-x:hidden;
+	font-family: "Helvetica";
+	height: 100vh; 
+}
