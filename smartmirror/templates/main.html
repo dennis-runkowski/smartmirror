@@ -1,0 +1,55 @@
+{% extends "bootstrap/base.html" %}
+{% block html %}
+<head>
+    <title>Smart Mirror</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    {% block styles %}
+  	{{super()}}
+    <script type=text/javascript
+      src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type=text/javascript>
+      var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <link rel="stylesheet" type="text/css" href="../static/css/main.css">
+    {% endblock %}      
+</head>
+{% block content %}
+<body>
+<div id="wrapper">
+  {% if top_banner %}
+  <div id="top_banner" class="row">
+    <div class="col-12">
+      {% include top_banner %}
+    </div>
+  </div>
+  {% endif %}
+  <div id="panels" class="row">
+    <div id="left_panel" class="col-4">
+      Left Panel
+    </div>
+    <div class="col-4">
+    </div>
+    <div id="right_panel" class="col-4">
+      {% if right_top_panel %}
+      <div id="top_right" class="row">
+        <div class="top_right">
+          {% include right_top_panel %}
+        </div>
+      </div>
+      {% endif %}
+      <div id="bottom_right" class="row">
+        <div class="bottom_right">
+          Bottom Right Panel
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="bottom_banner" class="row">
+    <div class="col-12">
+      Bottom Banner
+    </div>
+  </div>
+</div>
+</body>
+{% endblock %}
+{% endblock %}
