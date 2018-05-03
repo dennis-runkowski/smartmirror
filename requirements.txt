@@ -1,0 +1,7 @@
+pyyaml
+requests
+html5lib
+flask
+lxml
+flask-bootstrap4
+Flask-Cache
