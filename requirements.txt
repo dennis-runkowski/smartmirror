@@ -5,3 +5,6 @@ flask
 lxml
 flask-bootstrap4
 Flask-Cache
+sqlalchemy-utils
+bs4
+feedparser

@@ -1,6 +1,8 @@
 """Config your personal smartmirror and setup for config.yml file."""
 
 import yaml
+import sqlite3
+import os
 
 print "-----------------------------------"
 print "|                                 |"
@@ -75,6 +77,13 @@ def plugin_selection(location, start, end, plugin_store=plugin_store,):
 		else:
 			print "Please enter a valid number"
 			continue
+
+# Create main db
+if not os.path.exists('smartmirror/data_files/main.db'):
+	print "creating"
+	conn = sqlite3.connect('smartmirror/data_files/main.db')
+	conn.close
+
 
 print "Lets setup the Top Banner!"
 print " "

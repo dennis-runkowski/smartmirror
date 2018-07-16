@@ -4,7 +4,7 @@ import json
 import random
 
 
-class TopBanner():
+class GreetingPlugin():
 	def __init__(self):
 		pass
 
@@ -21,11 +21,30 @@ class TopBanner():
 		else:
 			return {"greeting": "Goodnight!"}
 
+
+class QuotePlugin():
+	def __init__(self):
+		pass
+
 	def quotes(self):
 		"""Plugin that gets random famous quotes."""
 		with open('smartmirror/data_files/quotes.json', 'r') as data:
 			quotes = json.load(data)
 			data.close()
 
-		random_number = random.randint(1, 1640)
+		random_number = random.randint(0, 1640)
 		return quotes[random_number]
+
+
+class PythonTipPlugin():
+	def __init__(self):
+		pass
+
+	def python_tips(self):
+		"""Plugin that gets random python tips."""
+		with open('smartmirror/data_files/python_tips.json', 'r') as data:
+			py_tips = json.load(data)
+			data.close()
+
+		random_number = random.randint(0, 44)
+		return py_tips[random_number]

@@ -25,9 +25,13 @@
   {% endif %}
   <div id="panels" class="row">
     <div id="left_panel" class="col-4">
-      Left Panel
+      {% if left_panel %}
+      <div>
+        {% include left_panel %}
+      </div>
+      {% endif %}
     </div>
-    <div class="col-4">
+    <div id="middle" class="col-4">
     </div>
     <div id="right_panel" class="col-4">
       {% if right_top_panel %}
@@ -37,17 +41,21 @@
         </div>
       </div>
       {% endif %}
+      {% if right_bottom_panel %}
       <div id="bottom_right" class="row">
         <div class="bottom_right">
-          Bottom Right Panel
+          {% include right_bottom_panel %}
         </div>
       </div>
+      {% endif %}
     </div>
   </div>
   <div id="bottom_banner" class="row">
+    {% if bottom_banner %}
     <div class="col-12">
-      Bottom Banner
+      {% include bottom_banner %}
     </div>
+    {% endif %}
   </div>
 </div>
 </body>

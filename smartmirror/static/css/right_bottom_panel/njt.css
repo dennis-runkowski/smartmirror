@@ -1,0 +1,6 @@
+*[id^='schedule_'] {
+	font-size: 28px;
+}
+*[id^='stop_'] {
+	font-size: 19px;
+}

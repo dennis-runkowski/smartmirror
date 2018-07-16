@@ -1,0 +1,137 @@
+[
+{
+	"tip": "Pretty print json in the terminal: cat example.json | python -m json.tool"
+},
+{
+	"tip": "In-Place Swapping Of Two Numbers: x, y = 10, 20 x, y = y, x ----> x = 20 y = 10"
+},
+{
+	"tip": "Use Interactive “_” Operator:  whenever we test an expression or call a function, the result dispatches to a temporary name, _ (an underscore)"
+},
+{
+	"tip": "Setup File Sharing: python -m SimpleHTTPServer"
+},
+{
+	"tip": "Check The Memory Usage Of An Object: import sys ... x=1 ... sys.getsizeof(x)"
+},
+{
+	"tip": "CSV to json: python -c 'import csv,json;print json.dumps(list(csv.reader(open('csv_file.csv'))))'"
+},
+{
+	"tip": "pinpointing the bottlenecks in your scripts: python cProfile my_script.py"
+},
+{
+	"tip": "locale - displays current locale information"
+},
+{
+	"tip": "calendar - does default to displaying a yearly calendar, but it has a bunch of options (args are year or year month, options are HTML output, calendar locale, encoding, and some type-specific stuff, see python -m calendar -h)"
+},
+{
+	"tip": "cgi, dumps a bunch of information as HTML to stdout"
+},
+{
+	"tip": "CGIHTTPRequestHandler - same as SimpleHTTPServer except via the CGIHTTPRequestHandler: it will executes scripts it recognizes as CGI, instead of just sending them over (has not survived the transition to Python 3)"
+},
+{
+	"tip": "compileall - compiles a tree of Python files to bytecode, has a bunch of options. Does not compile to stripped files (pyo)"
+},
+{
+	"tip": "cProfiler - runs the provided script file (argument) under cProfiler"
+},
+{
+	"tip": "dis disassembles a python script"
+},
+{
+	"tip": "doctest - runs doctests on the provided files (which can be python scripts or doctest files)"
+},
+{
+	"tip": "encodings.rot_13 - rot13 encodes stdin to stdout (has not survived the transition to Python 3)"
+},
+{
+	"tip": "filecmp - directory entry comparison tool"
+},
+{
+	"tip": "fileinput - some kind of ghetto pseudo-annotate. No idea what use that thing might be of"
+},
+{
+	"tip": "formatter - reformats the provided file argument (or stdin) to stdout: 80c paragraphs &etc"
+},
+{
+	"tip": "ftplib - ghetto FTP client"
+},
+{
+	"tip": "gzip - ghetto gzip (or gunzip with -d), can only compress and decompress, does not delete the archive file"
+},
+{
+	"tip": "htmllib - strips HTML tags off of an HTML file"
+},
+{
+	"tip": "ifc - dumps some info about the provided aiff file (if given two paths, also copies path1 to path2)"
+},
+{
+	"tip": "imaplib - ghetto IMAP client"
+},
+{
+	"tip": "json.tool - pretty prints JSON"
+},
+{
+	"tip": "locale - displays current locale information"
+},
+{
+	"tip": "mimify - converts (mail) messages to and from MIME format"
+},
+{
+	"tip": "modulefinder - lists the modules imported by the provided script argument, and their location"
+},
+{
+	"tip": "pdb - automatically enters PDB post-mortem mode if the script crashes"
+},
+{
+	"tip": "platform - displays the platform string"
+},
+{
+	"tip": "poplib - dumps a bunch of info on a POP mailbox"
+},
+{
+	"tip": "profile - see cProfile"
+},
+{
+	"tip": "pstats - opens a statistics browser (for profile files)"
+},
+{
+	"tip": "pydoc - same as the pydoc command"
+},
+{
+	"tip": "quopri / uu  binhex / base64 - encode / decode - quoted-Printable / UUEncoded content."
+},
+{
+	"tip": "shlex - displays tokenization result of the provided file argument (one token per line prefixed with Token:)"
+},
+{
+	"tip": "SimpleHTTPServer - serve the current directory over HTTP on port 8080"
+},
+{
+	"tip": "SimpleXMLRPCServer - XMLRPC server for power and addition"
+},
+{
+	"tip": "smtpd - SMTP proxy"
+},
+{
+	"tip": "telnetlib - telnet client"
+},
+{
+	"tip": "timeit - command line profiling interface"
+},
+{
+	"tip": "tokenize - dumps tokenization result of a Python file"
+},
+{
+	"tip": "urllib - fetches a url"
+},
+{
+	"tip": "webbrowser - opens provided URL in your default web browser (options: in a new window, in a new tab)"
+},
+{
+	"tip": "whichdb - tries to guess which db package (for db format nobody cares about) can be used to read a db file"
+}
+]
