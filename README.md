@@ -4,7 +4,7 @@ This tutorial will show you how to create your own smartmirror with a raspberry 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on rasberry pi.
 
-![Alt text](img/smartmirror.jpg?raw=true "Title")
+![Alt text](img/smartmirror.JPG?raw=true "Title")
 
 ### Requirements
 * Currently built for `linux systems` only (windows coming soon!)
