@@ -111,11 +111,10 @@ Saving your config to config.yml
 Completed!
 
 ```
-***Following the steps in the smartmirror_setup.py script***
+***Follow the steps in the smartmirror_setup.py script. I recommend starting with one or two plugins for the first run. For a deeper dive into the application see the `Application Details` section.***
 
-***I recommend starting with one or two plugins for the first run.***
-
-***See the Application Details section for a deeper look into the application.***
+### Application Details
+Placeholder
 
 ### Raspberry Pi Setup
 
@@ -123,9 +122,11 @@ Placeholder
 
 ### Deployment
 
-### Application Details
-Placeholder
-
 ### Physical Setup
 
 Placeholder
+
+### TO DO
+* Testing
+* Additional logging
+* Enhance documentaion and comments
