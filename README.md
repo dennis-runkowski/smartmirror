@@ -1,10 +1,11 @@
 # SmartMirror
 `*Work in Progress*`
-This tutorial will show you how to create your own smartmirror with a raspberry pi and a one way mirror. The smartmirror is powered with a flask application that can be configured to your needs. At  
+
+This tutorial will show you how to create your own smartmirror with a raspberry pi and a one way mirror. The smartmirror is powered with a flask application that can be configured to your needs.
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on rasberry pi.
 
-![Alt text](img/smartmirror.JPG?raw=true "Title")
+![Alt text](img/smartmirror.JPG?raw=true "Smartmirror")
 
 ### Requirements
 * Currently built for `linux systems` only (windows coming soon!)
@@ -18,6 +19,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Local Setup
 To quickly get started on your local machine, follow the steps below:
 **Clone/Download this repo to your local machine.**
+
 **Ensure the correct python is installed:**
 ```
 dennis_ubuntu@Dennis-Runkowski-Ubuntu:~$ python
