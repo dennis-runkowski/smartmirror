@@ -2,9 +2,9 @@ pyyaml
 requests
 html5lib
 flask
-lxml
 flask-bootstrap4
-Flask-Cache
+flask_sqlalchemy
 sqlalchemy-utils
 bs4
 feedparser
+uwsgi

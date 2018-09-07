@@ -6,8 +6,8 @@ function callOnInterval(time, url, fn) {
     }, time);
 }
 
-// Departure Vision for NJT
-callOnInterval(3600000, '/right_bottom',
+// Rss feed update
+callOnInterval(900000, '/right_bottom',
     function(data) {
         
        var rssJsData = data

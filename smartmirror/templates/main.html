@@ -10,7 +10,7 @@
     <script type=text/javascript>
       var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     </script>
-    <link rel="stylesheet" type="text/css" href="../static/css/main.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/{{style}}">
     {% endblock %}      
 </head>
 {% block content %}

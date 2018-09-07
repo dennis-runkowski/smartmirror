@@ -7,7 +7,7 @@ function callOnInterval(time, url, fn) {
 }
 
 // Update date/time endpoint every 30m
-callOnInterval(30000, '/top_banner',
+callOnInterval(1800000, '/top_banner',
     function(data) {
     	$("#quotes").text(data["quoteText"]);
     	$("#author").text(data["quoteAuthor"]);

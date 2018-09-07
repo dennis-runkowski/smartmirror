@@ -5,10 +5,9 @@ function callOnInterval(time, url, fn) {
         return false;
     }, time);
 }
-console.log("hello")
-console.log(tips_timer)
+
 // Update date/time endpoint every 30m
-callOnInterval(tips_timer, '/top_banner',
+callOnInterval(1800000, '/top_banner',
     function(data) {
     	$("#py_tips").text(data["tip"]);
     });

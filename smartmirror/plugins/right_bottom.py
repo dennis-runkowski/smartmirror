@@ -1,15 +1,16 @@
-"""This class contains all the plugins for the right bottom banner."""
+"""These classes contain all the plugins for the right bottom banner."""
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime, date, timedelta, time
+from datetime import datetime, date, time
 import feedparser
 import random
 from ..models.models import NJTModel
 
 
 class NJTPlugin():
-	def __init__(self):
-		pass
+	def __init__(self, logger):
+		"""Setting up logger."""
+		self.logger = logger
 
 	def update_njt_schedule(self, password, username, station, direction):
 		"""Update NJT schedule in main.db."""
@@ -17,21 +18,22 @@ class NJTPlugin():
 		incr_date = date.today()
 
 		if not last_time_stamp:
-			print "First run, load db"
+			self.logger.info("First run, load db")
 		elif incr_date <= last_time_stamp:
-			print "Database is up to date!"
+			self.logger.info("Database is up to date!")
 			return
 
 		try:
 			data = requests.get(
 				'http://traindata.njtransit.com:8092/'
 				'njttraindata.asmx/getStationScheduleXML'
-				'?username={un}&password={pword}&station={st}'
-				.format(un=username, pword=password, st=station))
+				'?username={un}&password={pword}&station={st}&NJT_Only={nj}'
+				.format(un=username, pword=password, st=station, nj='yes'))
 
 			soup = BeautifulSoup(data.text, "html5lib")
 
 		except requests.exceptions.RequestException as e:
+			self.logger.error(e)
 			raise e
 
 		schedule_data = []
@@ -40,7 +42,7 @@ class NJTPlugin():
 				schedule_data.append(schedule.sched_dep_date.text)
 
 		if len(schedule_data) < 2:
-			print "No data was pulled!"
+			self.logger.info("No data was pulled!")
 			return
 
 		try:
@@ -50,6 +52,7 @@ class NJTPlugin():
 				_row.save_to_db()
 
 		except Exception as e:
+			self.logger.error(e)
 			raise e
 
 	def get_njt_schedule(self):
@@ -80,7 +83,6 @@ class NJTPlugin():
 			return train_status
 
 		try:
-			print "request"
 			data = requests.get(
 				'http://traindata.njtransit.com:8092/'
 				'njttraindata.asmx/getTrainScheduleXML'
@@ -90,7 +92,7 @@ class NJTPlugin():
 			soup = BeautifulSoup(data.text, "html5lib")
 
 		except Exception as e:
-			print e
+			self.logger.error(e)
 			train_status.append(bad_request)
 
 			return train_status
@@ -135,11 +137,11 @@ class NJTPlugin():
 		return full_dataset
 
 
-class RssPlugin(object):
+class RssPlugin():
 	"""Rss feed plugin."""
-	def __init__(self, feed):
-		super(RssPlugin, self).__init__()
+	def __init__(self, feed, logger):
 		self.feed = feed
+		self.logger = logger
 
 	def rss_feed(self):
 		"""Get rss data."""
@@ -160,6 +162,6 @@ class RssPlugin(object):
 				return rss_json
 
 		except Exception as e:
-			print e
+			self.logger.error(e)
 			rss_json = {}
 			return rss_json

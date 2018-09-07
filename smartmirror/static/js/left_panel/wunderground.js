@@ -7,7 +7,7 @@ function callOnInterval(time, url, fn) {
 }
 
 // Wunderground data
-callOnInterval(3600, '/left_panel',
+callOnInterval(360000, '/left_panel',
     function(data) {
         
        var wundergroundData = data

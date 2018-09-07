@@ -3,8 +3,9 @@ from datetime import datetime
 
 
 class DateTime():
-	def __init__(self):
-		pass
+	def __init__(self, logger):
+		"""Setting up logger."""
+		self.logger = logger
 
 	def date_time(self):
 		"""Route for the current time and data."""
@@ -13,5 +14,6 @@ class DateTime():
 		dt_split = date_time.split("#")
 		data["date"] = dt_split[0]
 		data["time"] = dt_split[1]
+		self.logger.debug("DateTime - %s", data)
 
 		return data
