@@ -71,7 +71,44 @@ grid to display your desired plugins.
 -----------------------------------
  
  
-Do you want to use the testing configuration (y/n)?: 
+Do you want to use the testing configuration (y/n)?: y
+Lets setup the Top Banner!
+ 
+Do you want to use the Top Banner (y/n)?: y
+These are the available plugins for the Top Banner:
+1. Greetings
+2. Quotes
+3. Python Tips
+4. Reminders
+
+Please enter the plugin number (i.e. 1): 1
+-----------------------------------
+ 
+Lets setup the Left Panel!
+ 
+Do you want to use the Left Panel (y/n)?: n
+-----------------------------------
+ 
+Lets setup the Right Top Panel!
+ 
+Do you want to use the Right Top Panel (y/n)?: y
+Currently there is only one plugin for this panel
+ 8. Date and Time
+
+Please enter the plugin number (i.e. 1): 8
+-----------------------------------
+ 
+Lets setup the Right Bottom Panel!
+ 
+Do you want to use the Right Bottom Panel (y/n)?: n
+-----------------------------------
+ 
+Lets setup the Bottom Banner!
+ 
+Do you want to use the Bottom Banner (y/n)?: n
+
+Saving your config to config.yml
+Completed!
 
 ```
 ***Following the steps in the smartmirror_setup.py script***
