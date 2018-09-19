@@ -30,6 +30,7 @@ class WunderGround():
             'Spray': '/static/img/icons/Rain.png',
             'Partly': '/static/img/icons/PartlySunny.png',
             'Thunderstorms': '/img/static/icons/Storm.png',
+            'Thunderstorm': '/img/static/icons/Storm.png',
             'Unknown': '/static/img/icons/Sun.png'
         }
         self.logger = logger

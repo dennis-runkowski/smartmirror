@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime, date, time
 import feedparser
 import random
-from ..models.models import NJTModel
+from ..models.models import NJTModel, APIlimit
 
 
 class NJTPlugin():
@@ -24,6 +24,20 @@ class NJTPlugin():
 			return
 
 		try:
+			count = APIlimit.get_row('njt')
+			if count:
+				update_count = APIlimit('njt', count.request_count)
+				# check reset
+				if count.request_count > 5:
+					update_count.reset_counter()
+					self.logger.warn("Backing off njt schedule request")
+					return
+				else:
+					update_count.update_counter()
+			else:
+				set_count = APIlimit('njt', 1)
+				set_count.save_to_db()
+
 			data = requests.get(
 				'http://traindata.njtransit.com:8092/'
 				'njttraindata.asmx/getStationScheduleXML'
@@ -41,13 +55,14 @@ class NJTPlugin():
 			if schedule.direction.text == direction:
 				schedule_data.append(schedule.sched_dep_date.text)
 
-		if len(schedule_data) < 2:
-			self.logger.info("No data was pulled!")
+		if len(schedule_data) == 0:
+			self.logger.warn("No data was pulled!")
 			return
 
 		try:
 			NJTModel.delete_all()
 			for row in schedule_data:
+				self.logger.warn("Updating NJT schedule")
 				_row = NJTModel(row, direction, incr_date)
 				_row.save_to_db()
 

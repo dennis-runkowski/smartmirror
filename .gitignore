@@ -2,3 +2,4 @@
 *.db
 archive
 *.yml
+*.tar.gz

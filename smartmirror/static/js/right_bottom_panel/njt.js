@@ -7,9 +7,11 @@ function callOnInterval(time, url, fn) {
 }
 
 // Departure Vision for NJT
-callOnInterval(18000, '/right_bottom', function(data) {     
+callOnInterval(180000, '/right_bottom', function(data) {     
     if (data[0]["departure_vision"][0]["status"] === "goodnight") {
-        console.debug("Goodnight - NJT")  
+        console.debug("Goodnight - NJT")
+        $("#stop_0").html("")
+        $("#stop_1").html("")
     } else {
         var step;
         var tempClass;
