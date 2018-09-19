@@ -1,0 +1,10 @@
+pyyaml
+requests
+html5lib
+flask
+flask-bootstrap4
+flask_sqlalchemy
+sqlalchemy-utils
+bs4
+feedparser
+uwsgi

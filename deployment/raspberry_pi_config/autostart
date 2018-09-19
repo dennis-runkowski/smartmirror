@@ -1,0 +1,12 @@
+@lxpanel --profile LXDE-pi
+@pcmanfm --desktop --profile LXDE-pi
+@xscreensaver -no-splash
+@point-rpi
+
+@xset s noblank
+
+@xset s off
+
+@xset –dpms
+
+@chromium-browser --incognito --kiosk http://127.0.0.1

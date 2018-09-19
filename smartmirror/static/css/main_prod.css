@@ -1,0 +1,42 @@
+/*Content Wrapper*/
+#wrapper {
+	height:100vh;
+}
+/*Top Banner*/
+#top_banner {
+	text-align: center;
+	font-size: 42px;
+	height: 15%;
+}
+/*Panels*/
+#panels {
+	text-align: center;
+	height: 70%;
+}
+#top_right {
+	height: 40%;
+}
+.top_right {
+	width: 100%;
+	text-align: center;
+}
+#bottom_right {
+	height: 60%;
+}
+.bottom_right {
+	width: 100%;
+	text-align: center;
+}
+/*Bottom Banner*/
+#bottom_banner {
+	text-align: center;
+	font-size: 42px;
+	height: 15%;
+}
+html body {
+	background-color: black;
+	color: white;
+	overflow-x:hidden;
+	font-family: "Helvetica";
+	height: 100vh; 
+}
