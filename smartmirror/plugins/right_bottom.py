@@ -61,8 +61,9 @@ class NJTPlugin():
 
 		try:
 			NJTModel.delete_all()
+			self.logger.warn("Updating NJT schedule")
+			self.logger.warn(schedule_data)
 			for row in schedule_data:
-				self.logger.warn("Updating NJT schedule")
 				_row = NJTModel(row, direction, incr_date)
 				_row.save_to_db()
 

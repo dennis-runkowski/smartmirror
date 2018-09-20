@@ -79,7 +79,7 @@ class APIlimit(db.Model):
 
 	def reset_counter(self):
 		reset = self.query.filter_by(api_name=self.api_name).first()
-		reset.request_count -= 1
+		reset.request_count = 0
 		db.session.add(reset)
 		db.session.commit()
 
