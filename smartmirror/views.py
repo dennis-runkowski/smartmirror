@@ -1,7 +1,9 @@
 """Main collection of views."""
 from datetime import datetime
-from flask import Blueprint, jsonify, render_template
+from flask import Blueprint, jsonify, render_template, request
 from flask import current_app as app
+from forms import RemindersForm
+from models.models import ReminderModel
 from plugins import top_banner, left_panel, right_top, right_bottom, bottom_banner
 
 # Blue print for the main display
@@ -51,6 +53,13 @@ bottom_banner_blueprint = Blueprint(
     template_folder="templates",
     static_folder="static"
 )
+# Blueprint for the reminders UI
+reminders_ui = Blueprint(
+    "reminders_ui",
+    __name__,
+    template_folder="templates",
+    static_folder="static"
+)
 
 
 @blueprint.route("/", methods=["GET"])
@@ -86,7 +95,6 @@ Currently the only plugins available are the following:
     -Greetings
     -Quotes
     -Python Tips
-    -Reminders
 """
 ###########################################################
 
@@ -196,6 +204,7 @@ This Section contains the endpoint for the bottom banner
 Currently the only plugins available are the following:
     -US Holidays
     -Chuck Norris Jokes
+    -Reminders
 """
 ###########################################################
 
@@ -211,9 +220,91 @@ def bottom_banner_endpoint():
     elif bb_config == "chuck_norris":
         data = bottom_banner.ChuckNorris(app.logger)
         return jsonify(data.joke())
+    elif bb_config == "reminders":
+        data = bottom_banner.Reminders(app.logger)
+        return jsonify(data.get_reminders())
     else:
         return jsonify({"Error": "No plugins selected"})
 
+
+@reminders_ui.route("/reminders", methods=["GET", "POST"])
+def reminders_ui_endpoint():
+    """Endpoint for the reminders form."""
+    # reminders_form = RemindersForm()
+
+    form_validation = [
+        'start_date',
+        'start_time',
+        'end_date',
+        'end_time',
+        'comment'
+    ]
+    if request.method == 'POST':
+        status = 1
+        res = {
+            "status": "",
+            "data": {}
+        }
+        for v in form_validation:
+            if not request.form.get(v):
+                status = 0
+                res["data"][v] = "Please complete this field."
+
+        if status == 0:
+            res["status"] = "error"
+            return jsonify(res)
+        else:
+            start_str = "{d}-{t}".format(
+                d=request.form.get("start_date"),
+                t=request.form.get("start_time")
+            )
+            end_str = "{d}-{t}".format(
+                d=request.form.get("end_date"),
+                t=request.form.get("end_time")
+            )
+            start_obj = datetime.strptime(start_str, "%b %d, %Y-%I:%M %p")
+            end_obj = datetime.strptime(end_str, "%b %d, %Y-%I:%M %p")
+            if start_obj >= end_obj:
+                res["status"] = "error"
+                error_comment = "Please enter an end date/time later the start."
+                res["data"]["end_date"] = error_comment
+                return jsonify(res)
+            reminder_data = ReminderModel(
+                start_obj,
+                request.form.get("comment"),
+                end_obj
+            )
+            reminder_data.save_to_db()
+            res["status"] = "success"
+            return jsonify(res)
+    return render_template('reminders_ui.html')
+
+
+@reminders_ui.route("/get_reminders", methods=["GET"])
+def get_reminders_endpoint():
+    """Get all the reminders in the database."""
+    plugin = bottom_banner.Reminders(app.logger)
+    data = plugin.get_all_reminders()
+    return jsonify(data)
+
+
+@reminders_ui.route("/delete_reminder/<_id>", methods=["POST"])
+def delete_reminders_endpoint(_id):
+    """
+    Delete reminder from the database with its id.
+
+    Parameters:
+        _id (str): Id for the reminder you want to delete
+    Returns:
+        success message.
+    """
+    try:
+        reminder = ReminderModel.find_by_id(_id)
+        reminder.delete_from_db()
+        return jsonify({"status": "success"})
+    except Exception as e:
+        app.logger.error(e)
+        return jsonify({"status": "error"})
 
 ###########################################################
 """

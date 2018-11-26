@@ -34,15 +34,15 @@ plugin_store = {
     1: "greetings",
     2: "quotes",
     3: "python_tips",
-    4: "reminders",
-    5: "wunderground",
-    6: "stock",
-    7: "placeholder",
-    8: "time",
-    9: "njt",
-    10: "rss",
-    11: "us_holidays",
-    12: "chuck_norris"
+    4: "wunderground",
+    5: "stock",
+    6: "placeholder",
+    7: "time",
+    8: "njt",
+    9: "rss",
+    10: "us_holidays",
+    11: "chuck_norris",
+    12: "reminders"
 }
 
 # Helper Functions
@@ -109,10 +109,9 @@ if tban == 'y':
     print "1. Greetings"
     print "2. Quotes"
     print "3. Python Tips"
-    print "4. Reminders"
     print ""
 
-    plugin_selection("top_banner", 1, 5)
+    plugin_selection("top_banner", 1, 4)
 
 
 print "-----------------------------------"
@@ -123,11 +122,11 @@ lpanel = grid_setup_error("Left Panel")
 
 if lpanel == 'y':
     print "These are the available plugins for the Left Panel:"
-    print "5. Weather - Wunderground API required"
-    print "6. Stock"
-    print "7. Place Holder"
+    print "4. Weather - Wunderground API required"
+    print "5. Stock"
+    print "6. Place Holder"
     print " "
-    _plugin = plugin_selection("left_panel", 5, 8)
+    _plugin = plugin_selection("left_panel", 4, 7)
 
     if _plugin == "wunderground":
         print ""
@@ -166,9 +165,9 @@ print " "
 rtop_panel = grid_setup_error("Right Top Panel")
 if rtop_panel == 'y':
     print "Currently there is only one plugin for this panel"
-    print " 8. Date and Time"
+    print " 7. Date and Time"
     print ""
-    plugin_selection("right_top_panel", 8, 9)
+    plugin_selection("right_top_panel", 7, 8)
 
 print "-----------------------------------"
 print " "
@@ -177,10 +176,10 @@ print " "
 rbottom_panel = grid_setup_error("Right Bottom Panel")
 if rbottom_panel == 'y':
     print "These are the available plugins for the Left Panel:"
-    print "9. New Jesey Transit - NJT API required"
-    print "10. Rss Feed"
+    print "8. New Jesey Transit - NJT API required"
+    print "9. Rss Feed"
     print " "
-    right_plugin = plugin_selection("right_bottom_panel", 9, 11)
+    right_plugin = plugin_selection("right_bottom_panel", 8, 10)
 
     if right_plugin == 'njt':
         print ""
@@ -213,11 +212,12 @@ print " "
 bottom_banner = grid_setup_error("Bottom Banner")
 if bottom_banner == 'y':
     print "These are the available plugins for the Top Banner:"
-    print "11. US Holidays"
-    print "12. Chuck Norris Jokes"
+    print "10. US Holidays"
+    print "11. Chuck Norris Jokes"
+    print "12. Reminders"
     print ""
 
-    plugin_selection("bottom_banner", 11, 13)
+    plugin_selection("bottom_banner", 10, 13)
 
 print ""
 print "Saving your config to config.yml"
