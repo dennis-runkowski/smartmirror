@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 curl -LOk https://github.com/denrun-p/smartmirror/archive/master.zip
-unzip master.zip
+unzip master.zip && mv smartmirror-master smartmirror
 
 cd smartmirror-master/deployment/raspberry_pi_config/
 ./raspberry_pi_install.sh
