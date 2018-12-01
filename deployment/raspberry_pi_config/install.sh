@@ -7,7 +7,7 @@ cd smartmirror-master/deployment/raspberry_pi_config/
 ./raspberry_pi_install.sh
 
 cd ../
-./build
+./build.sh
 
 timestamp=$(date +%s)
 

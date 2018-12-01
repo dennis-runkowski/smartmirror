@@ -68,10 +68,6 @@ echo "###############################"
 
 sudo apt-get install sqlite
 
-echo "###############################"
-echo "Deploying SmartMirror Application"
-echo "###############################"
-
 
 echo "##################################"
 echo " Install Complete - Reboot the Pi"
