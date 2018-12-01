@@ -36,6 +36,9 @@ sudo chown -R www-data:www-data /var/log/smartmirror
 sudo chown -R pi:smartmirror /srv/
 sudo chmod -R g+rwx /srv/
 
+mkdir -p /home/pi/.config/lxsession
+mkdir -p /home/pi/.config/lxsession/LXDE-pi
+
 sudo rm -f /home/pi/.config/lxsession/LXDE-pi/autostart
 sudo mv autostart /home/pi/.config/lxsession/LXDE-pi/
 
