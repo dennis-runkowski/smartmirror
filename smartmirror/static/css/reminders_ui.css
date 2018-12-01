@@ -47,3 +47,21 @@ body {
 		left: 0%; 
 	} 
 }
+a.active {
+    color: #26a69a !important;
+}
+a:hover {
+    font-weight: 900 !important;
+}
+.tabs .tab a {
+    color: #26a69a !important;
+}
+.tabs .tab a:focus, .tabs .tab a:focus.active {
+    background-color: #ffff !important;
+}
+.tabs .indicator {
+    background-color: #26a69a !important;
+}
+a {
+    color: #26a69a !important;
+}

@@ -2,9 +2,9 @@
 from datetime import datetime
 from flask import Blueprint, jsonify, render_template, request
 from flask import current_app as app
-from forms import RemindersForm
 from models.models import ReminderModel
-from plugins import top_banner, left_panel, right_top, right_bottom, bottom_banner
+from plugins import top_banner, left_panel,\
+    right_top, right_bottom, bottom_banner
 
 # Blue print for the main display
 blueprint = Blueprint(
@@ -62,14 +62,15 @@ reminders_ui = Blueprint(
 )
 
 
+# noinspection SpellCheckingInspection
 @blueprint.route("/", methods=["GET"])
 def smartmirror():
     """Main Smart Mirror Template."""
-    top_banner = source_template("top_banner", app.config)
-    right_top_panel = source_template("right_top_panel", app.config)
-    right_bottom_panel = source_template("right_bottom_panel", app.config)
-    left_panel = source_template("left_panel", app.config)
-    bottom_banner = source_template("bottom_banner", app.config)
+    top_banner_temp = source_template("top_banner", app.config)
+    right_top_panel_temp = source_template("right_top_panel", app.config)
+    right_bottom_panel_temp = source_template("right_bottom_panel", app.config)
+    left_panel_temp = source_template("left_panel", app.config)
+    bottom_banner_temp = source_template("bottom_banner", app.config)
 
     if app.config.get("environment") == "testing":
         app.logger.info("Using testing css file.")
@@ -81,12 +82,13 @@ def smartmirror():
     return render_template(
         "main.html",
         style=style,
-        right_top_panel=right_top_panel,
-        top_banner=top_banner,
-        right_bottom_panel=right_bottom_panel,
-        left_panel=left_panel,
-        bottom_banner=bottom_banner
+        right_top_panel=right_top_panel_temp,
+        top_banner=top_banner_temp,
+        right_bottom_panel=right_bottom_panel_temp,
+        left_panel=left_panel_temp,
+        bottom_banner=bottom_banner_temp
     )
+
 
 ##########################################################
 """
@@ -305,6 +307,7 @@ def delete_reminders_endpoint(_id):
     except Exception as e:
         app.logger.error(e)
         return jsonify({"status": "error"})
+
 
 ###########################################################
 """

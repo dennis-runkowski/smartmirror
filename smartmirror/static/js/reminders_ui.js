@@ -7,6 +7,9 @@ $(document).ready(function(){
 $(document).ready(function() {
    $("input#input_text, textarea#comment").characterCounter();
 });
+$(document).ready(function(){
+   $('.tabs').tabs();
+});
 $(function() {
     $("#submit_reminder").click(function(e) {
     	e.preventDefault();
@@ -46,7 +49,8 @@ $(function() {
                 $("#reminder_table").html("")
                 $.each(data, function(index) {
                     $("#reminder_table").append(
-                        "<tr><td>" + data[index]["start"]
+                        "<tr id='table_row_" + data[index]["id"] + "'"
+                        + "><td>" + data[index]["start"]
                         + "</td><td>" + data[index]["end"] 
                         + "</td><td>" + data[index]["reminder"]
                         + "</td><td><a id='delete_row_" + data[index]["id"] + "'"
@@ -61,7 +65,11 @@ $(function() {
                     M.toast({html: "Deleting this reminder!"})
                     $.ajax({
                         url: "/delete_reminder/" + id,
-                        type: "POST"
+                        type: "POST",
+                        success: function(data) {
+                            var rowId = "#table_row_" + id
+                            $(rowId).remove()
+                        }
                     })
                 })
 
