@@ -3,3 +3,4 @@
 archive
 *.yml
 *.tar.gz
+.idea/

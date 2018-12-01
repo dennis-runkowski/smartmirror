@@ -26,7 +26,6 @@ class ProductionConfig(BaseConfig):
 class TestingConfig(BaseConfig):
     """Testing config for the application."""
 
-    DEBUG = False
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
     ENV = 'THIS APP IS IN DEBUG MODE. YOU SHOULD NOT SEE THIS IN PRODUCTION.'
     DEBUG = True

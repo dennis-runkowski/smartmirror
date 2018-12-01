@@ -5,6 +5,7 @@ import os
 import requests
 import random
 from bs4 import BeautifulSoup
+from ..models.models import ReminderModel
 
 
 class UsHolidays():
@@ -89,3 +90,75 @@ class ChuckNorris():
         self.logger.debug("ChuckNorris random joke - %s", random_joke)
 
         return [random_joke["joke"]]
+
+
+class Reminders():
+    """
+    This is a plugin to get and save reminders.
+
+    Attributes:
+        logger (obj): Pass in the logger object.
+    """
+
+    def __init__(self, logger):
+        """
+        The constructor for the Reminder class.
+
+        Parameters:
+            logger (obj): Pass in the logger object.
+        """
+        self.logger = logger
+
+    def get_reminders(self, date_obj=False):
+        """
+        Get any reminders from the database.
+
+        Attributes:
+            date_obj (datetime): Pass in a datetime object to filter.
+        Returns:
+            reminders_list: List of reminders from the database.
+        """
+        # If date_obj is not passed, set default to current time.
+        if not date_obj:
+            date_obj = datetime.now()
+
+        # Ensure date_obj is the right format
+        if not isinstance(date_obj, datetime):
+            self.logger.error("Invalid datetime object in reminder plugin.")
+            raise TypeError("Please pass a valid datetime object")
+
+        try:
+            data = ReminderModel.get_reminders(date_obj)
+            reminders = [i.comment for i in data]
+            return reminders
+        except Exception as e:
+            self.logger.error(e)
+            return []
+
+    def get_all_reminders(self):
+        """
+        Get all the reminders in the database.
+
+        Returns:
+            sorted_reminders: Sorted list of reminder dictionaries from the DB.
+        """
+        try:
+            all_reminders = []
+            data = ReminderModel.get_all_reminders()
+            for row in data:
+                temp = {
+                    "start": row.reminder_date,
+                    "end": row.duration,
+                    "reminder": row.comment,
+                    "id": row.id
+                }
+                all_reminders.append(temp)
+            sorted_reminders = sorted(
+                all_reminders,
+                key=lambda x: x["start"],
+                reverse=True
+            )
+            return sorted_reminders
+        except Exception as e:
+            self.logger.error(e)
+            return []

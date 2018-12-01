@@ -8,3 +8,4 @@ sqlalchemy-utils
 bs4
 feedparser
 uwsgi
+flask_wtf

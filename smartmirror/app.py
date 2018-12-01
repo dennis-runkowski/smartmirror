@@ -52,6 +52,11 @@ def create_app():
         from views import bottom_banner_blueprint
         app.register_blueprint(bottom_banner_blueprint)
 
+        # Web UI to save reminders
+        if app.config.get("bottom_banner").keys()[0] == 'reminders':
+            from views import reminders_ui
+            app.register_blueprint(reminders_ui)
+
     register_extensions(app)
 
     return app

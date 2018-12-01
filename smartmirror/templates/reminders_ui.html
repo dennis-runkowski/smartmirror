@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Reminders</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <script type=text/javascript
+          src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type=text/javascript>
+      var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+
+
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script type="text/javascript"
+          src="{{ url_for('static', filename='js/reminders_ui.js') }}"></script>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
+  <link rel="stylesheet" type="text/css"
+        href="../static/css/reminders_ui.css">
+</head>
+<body>
+<div class="center">
+  <h1>SmartMirror </h1>
+</div>
+<div class="valign-wrapper">
+  <div class="container">
+    <div class="col s12 z-depth-4 card-panel">
+      <div class="row">
+        <div class="col s12">
+          <ul class="tabs">
+            <li class="tab col s6">
+              <a id="add_tab" class="active" href="#">
+                Add Reminder
+              </a>
+            </li>
+            <li class="tab col s6">
+              <a id="delete_tab" href="#">
+                Delete Reminder
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div id="add_reminder">
+        <h5 class="center"> Save a Reminder!</h5>
+        <div class="row">
+          <div class="col s12 center">
+            <div id="reminder_icon" class="material-icons">
+              event_note
+            </div>
+          </div>
+        </div>
+        <form id="reminder-form">
+          <div class="row">
+            <div class="row hide_errors">
+              <div id="start_date_error" class="col s6">test</div>
+              <div id="start_time_error" class="col s6">test</div>
+            </div>
+            <div class="input-field col s6">
+              <input id="start_date" type="text" name="start_date"
+                     class="datepicker">
+              <label for="start_date">Start Date</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="start_time" type="text" name="start_time"
+                     class="timepicker">
+              <label for="start_time">Start Time</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="row hide_errors">
+              <div id="end_date_error" class="col s6"></div>
+              <div id="end_time_error" class="col s6"></div>
+            </div>
+            <div class="input-field col s6">
+              <input id="end_date" type="text" name="end_date"
+                     class="datepicker">
+              <label for="end_date">End Date</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="end_time" type="text" name="end_time"
+                     class="timepicker">
+              <label for="end_time">End Time</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="row hide_errors">
+              <div id="comment_error" class="col s12"></div>
+            </div>
+            <div class="input-field col s12">
+                            <textarea id="comment" class="materialize-textarea"
+                                      name="comment"
+                                      data-length="120"></textarea>
+              <label for="comment">Reminder</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12 center">
+              <button id="submit_reminder"
+                      class="btn waves-effect waves-light"
+                      type="submit" name="action">Save
+                <i class="material-icons right">send</i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div id="delete_reminder">
+        <h5 class="center"> Delete a Reminder!</h5>
+        <table>
+          <thead>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Reminder</th>
+          </thead>
+          <tbody id="reminder_table">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
