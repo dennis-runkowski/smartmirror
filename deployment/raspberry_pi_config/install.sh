@@ -4,7 +4,7 @@ set -e
 mkdir -p /srv
 
 curl -LOk https://github.com/denrun-p/smartmirror/archive/master.zip
-unzip master.zip && mv smartmirror-master /srv/smartmirror
+unzip master.zip && mv -f smartmirror-master /srv/smartmirror
 
 cd /srv/smartmirror/deployment/raspberry_pi_config/
 ./raspberry_pi_install.sh
