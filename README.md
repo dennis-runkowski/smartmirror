@@ -6,18 +6,24 @@ This tutorial will show you how to create your own smartmirror with a raspberry 
 ![Alt text](img/smartmirror.JPG?raw=true "Smartmirror")
 
 ## Getting Started
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on rasberry pi.
 ### Requirements
+I've included some links to the parts, but these are only recommendations. You can use cheaper parts, this is just what I had success with.
 * Currently built for `linux operating systems` only (windows coming soon!)
 * `Designed for a 24 inch monitor`
 * `Python2.7`
-* Basic Flask, Linux and Bash knownledge
-* Raspberry Pi 3
-* Two way mirror
-* 24 inch in ultra thin monitor
-
+* Basic Flask, Linux and Bash knowledge
+* Raspberry Pi 3 (https://www.amazon.com/gp/product/B01C6Q2GSY/ref=oh_aui_search_detailpage?ie=UTF8&psc=1)
+* Two way mirror (https://www.amazon.com/gp/product/B06Y2JMH7C/ref=oh_aui_detailpage_o00_s01?ie=UTF8&psc=1  )
+* 24 inch in ultra thin monitor (https://www.amazon.com/gp/product/B01HIA63AU/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1)
+### Install
+1. Make sure you change the default password to your pi for security reasons.
+2. Setup ssh on you pi.
+3. Install the pi by opening a terminal and running this command on your pi. Follow all the instructions during the installation.
+```bash
+sudo bash -c "$(curl -sL https://raw.githubusercontent.com/denrun-p/smartmirror/master/deployment/raspberry_pi_config/raspberry_pi_install.sh)"
+```
 ### Local Setup
-To quickly get started on your local machine, follow the steps below:
+The SmartMirror application was made to be developer friendly. To get started setup a development environment on your local machine, follow the steps below:
 
 **Clone/Download this repo to your local machine.**
 
