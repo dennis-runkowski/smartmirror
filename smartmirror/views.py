@@ -1,5 +1,6 @@
 """Main collection of views."""
 from datetime import datetime
+import json
 from flask import Blueprint, jsonify, render_template, request
 from flask import current_app as app
 from models.models import ReminderModel
@@ -89,6 +90,37 @@ def smartmirror():
         bottom_banner=bottom_banner_temp
     )
 
+@blueprint.route("/setup", methods=["GET", "POST"])
+def setup_smartmirror():
+    """configure your smartmirror from the frontend"""
+    version = app.config.get("SM_VERSION")
+    plugin_lib = app.config.get("PLUGIN_LIB")
+    top_banner_plugins = plugin_lib.get("top_banner")
+    left_panel_plugins = plugin_lib.get("left_panel")
+    right_top_plugins = plugin_lib.get("right_top_panel")
+    right_bottom_plugins = plugin_lib.get("right_bottom_panel")
+    bottom_banner_plugins = plugin_lib.get("bottom_banner")
+
+    # with open("test.json", "w") as f:
+    #     json.dump({"test": "test"}, f)
+    return render_template(
+        "setup.html",
+        version=version,
+        top_banner=top_banner_plugins,
+        left_panel=left_panel_plugins,
+        right_top=right_top_plugins,
+        right_bottom=right_bottom_plugins,
+        bottom_banner=bottom_banner_plugins
+    )
+@blueprint.route("/setup_config/<panel>/<plugin>", methods=["GET"])
+def setup_plugin_config(panel, plugin):
+    """Get the config for a plugin"""
+    with open("plugin_library.json", "r") as f:
+        data = json.load(f)
+    print data
+    details = data.get(panel, {}).get(plugin, {})
+    return jsonify(details)
+
 
 ##########################################################
 """
@@ -161,6 +193,16 @@ def left_endpoint():
         zipcode = creds.get("zipcode")
         data = left_panel.WunderGround(api_key, state, zipcode, app.logger)
         return jsonify(data.current_with_forecast())
+    elif lp_config == "yahoo_weather":
+        creds = app.config.get("left_panel").get("yahoo_weather")
+        woeid = creds.get("woeid")
+        data = left_panel.YahooWeather(woeid)
+        weather = {}
+        if data.get_data():
+            weather["conditions"] = data.get_conditions,
+            weather["forecast"] = data.get_forecast[1:5]
+
+        return jsonify(weather)
     elif lp_config == "stock":
         creds = app.config.get("left_panel").get("stock")
         api_key = creds.get("api_key")

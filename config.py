@@ -2,15 +2,21 @@
 
 import os
 import yaml
+import json
 
 
 class BaseConfig:
     """Base Config for our application."""
 
-    with open("config.yml", 'r') as stream:
+    with open("config.yml", "r") as stream:
         plugin_config = yaml.load(stream)
 
+    with open("plugin_library.json", "r") as plugins:
+        plugin_library = json.load(plugins)
+
     SECRET_KEY = plugin_config.get("secret_key", "123456")
+    SM_VERSION = '1.0.0'
+    PLUGIN_LIB = plugin_library
 
 
 class ProductionConfig(BaseConfig):

@@ -23,7 +23,9 @@ class WunderGround():
             'Mist': '/static/img/icons/Rain.png',
             'Fog': '/static/img/icons/Haze.png',
             'Cloud': '/static/img/icons/Cloud.png',
+            'Cloudy': '/static/img/icons/Cloud.png',
             'Clear': '/static/img/icons/Sun.png',
+            'Sunny': '/static/img/icons/Sun.png',
             'Funnel': '/static/img/icons/Tornado.png',
             'Hail': '/static/img/icons/Hail.png',
             'Squalls': '/static/img/icons/Wind.png',
@@ -172,3 +174,137 @@ class StockData(object):
             # respect the alpha advantage rate limit
             time.sleep(1)
         return data
+
+
+class YahooWeather(object):
+    """
+    Yahoo Weather api
+
+    The location identifier can be found by looking up your city/state
+    on yahoo.com and extracting the woeid from the url.
+
+    Attributes:
+        woeid (str): Unique location identifier
+    """
+    def __init__(self, woeid):
+        """Inits YahooWeather with woeid and base_url."""
+        self.woeid = woeid
+        # Base url for the public yahoo api
+        self.base_url = "https://query.yahooapis.com/v1/public/yql?"
+        # Weather data
+        self.data = {}
+        # Dict containing all the icons
+        self.conditions = {
+            "tropical storm": "/static/img/icons/Storm.png",
+            "hurricane": "/static/img/icons/Storm.png",
+            "tornado": "/static/img/icons/Tornado.png",
+            "severe thunderstorms": "/static/img/icons/Storm.png",
+            "thunderstorms": "/static/img/icons/Storm.png",
+            "mixed rain and snow": "/static/img/icons/Snow.png",
+            "rain and snow": "/static/img/icons/Snow.png",
+            "mixed rain and sleet": "/static/img/icons/Rain.png",
+            "rain": "/static/img/icons/Rain.png",
+            "mixed snow and sleet": "/static/img/icons/Snow.png",
+            "freezing drizzle": "/static/img/icons/Snow.png",
+            "drizzle": "/static/img/icons/Rain.png",
+            "freezing rain": "/static/img/icons/Rain.png",
+            "showers": "/static/img/icons/Rain.png",
+            "snow flurries": "/static/img/icons/Snow.png",
+            "light snow showers": "/static/img/icons/Snow.png",
+            "blowing snow": "/static/img/icons/Snow.png",
+            "snow": "/static/img/icons/Snow.png",
+            "hail": "/static/img/icons/Hail.png",
+            "sleet": "/static/img/icons/Hail.png",
+            "dust": "/static/img/icons/Haze.png",
+            "foggy": "/static/img/icons/Haze.png",
+            "haze": "/static/img/icons/Haze.png",
+            "smoky": "/static/img/icons/Haze.png",
+            "blustery": "/static/img/icons/Wind.png",
+            "windy": "/static/img/icons/Wind.png",
+            "cold": "/static/img/icons/Sun.png",
+            "cloudy": "/static/img/icons/Cloud.png",
+            "mostly cloudy (night)": "/static/img/icons/PartlyMoon.png",
+            "mostly cloudy (day)": "/static/img/icons/PartlySunny.png",
+            "mostly sunny": "/static/img/icons/PartlySunny.png",
+            "mostly cloudy": "/static/img/icons/Cloud.png",            "partly cloudy (night)": "/static/img/icons/PartlyMoon.png",
+            "partly cloudy (day)": "/static/img/icons/PartlySunny.png",
+            "clear (night)": "/static/img/icons/Moon.png",
+            "sunny": "/static/img/icons/Sun.png",
+            "fair (night)": "/static/img/icons/Moon.png",
+            "fair (day)": "/static/img/icons/Sun.png",
+            "mixed rain and hail": "/static/img/icons/Hail.png",
+            "hot": "/static/img/icons/Sun.png",
+            "isolated thunderstorms": "/static/img/icons/Storm.png",
+            "scattered thunderstorms": "/static/img/icons/Storm.png",
+            "scattered showers": "/static/img/icons/Rain.png",
+            "heavy snow": "/static/img/icons/Snow.png",
+            "scattered snow showers": "/static/img/icons/Snow.png",
+            "partly cloudy": "/static/img/icons/Cloud.png",
+            "thundershowers": "/static/img/icons/Storm.png",
+            "snow showers": "/static/img/icons/Snow.png",
+            "isolated thundershowers": "/static/img/icons/Storm.png",
+            "not available": "/static/img/icons/Sun.png"
+        }
+
+    def get_data(self):
+        """
+        Get the weather data for a location.
+
+        Returns:
+            A json containing the current weather.
+        """
+        yql_query = u"select * from weather.forecast where woeid={_id}".format(
+            _id=self.woeid
+        )
+        parameters = {
+            "q": yql_query,
+            "format": "json"
+        }
+        try:
+            data = requests.get(self.base_url, params=parameters)
+        except Exception as a:
+            raise e
+
+        data_check = data.json().get("query", None)
+        if data_check:
+            res = data_check["results"]["channel"]
+            self.data = res
+            return True
+
+        return False
+
+    @property
+    def get_forecast(self):
+        """:obj: `list` get the weather forecast
+        """
+        forecast = self.data.get("item", {}).get("forecast", [])
+        for idx, conditions in enumerate(forecast):
+            temp_text = conditions.get("text", "not available")
+            icon_path = self.get_link(temp_text)
+            forecast[idx]["link"] = icon_path
+        return forecast
+
+    @property
+    def get_conditions(self):
+        """:obj: `dict` get the current weather
+        """
+        conditions = self.data.get("item", {}).get("condition", {})
+        city = self.data.get("location", {}).get("city", "")
+        text = conditions.get("text")
+        icon_link = self.get_link(text)
+        conditions["link"] = icon_link
+        conditions["location"] = city
+        return conditions
+
+    def get_link(self, text):
+        """
+        Method to get the right icon link from the condition text.
+
+        Args:
+            text (str): Text for the current weather condition
+        Returns:
+            String containing the path to the icon.
+        """
+
+        normalize_text = text.lower()
+        return self.conditions.get(normalize_text, "/static/img/icons/Sun.png")

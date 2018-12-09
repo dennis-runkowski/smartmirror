@@ -34,9 +34,9 @@ plugin_store = {
     1: "greetings",
     2: "quotes",
     3: "python_tips",
-    4: "wunderground",
+    4: "yahoo_weather",
     5: "stock",
-    6: "placeholder",
+    6: "wunderground",
     7: "time",
     8: "njt",
     9: "rss",
@@ -122,13 +122,21 @@ lpanel = grid_setup_error("Left Panel")
 
 if lpanel == 'y':
     print "These are the available plugins for the Left Panel:"
-    print "4. Weather - Wunderground API required"
+    print "4. Weather - Yahoo"
     print "5. Stock"
-    print "6. Place Holder"
+    print "6. Weather - Wunderground API required (deprecated)"
     print " "
     _plugin = plugin_selection("left_panel", 4, 7)
 
-    if _plugin == "wunderground":
+    if _plugin == "yahoo_weather":
+        print "You need your location woeid for yahoo weather."
+        print "You can find this in the yahoo url for you city."
+        print "Example: https://www.yahoo.com/news/weather/united-states/lyndhurst/lyndhurst-2443376"
+        woeid = raw_input("Please enter your location woeid:")
+        config_data["left_panel"]["yahoo_weather"] = {
+            "woeid": woeid
+        }
+    elif _plugin == "wunderground":
         print ""
         print "Please sign up for the Wunderground API:"
         print "https://www.wunderground.com/weather/api"
