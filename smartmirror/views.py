@@ -2,6 +2,9 @@
 from datetime import datetime
 import json
 import yaml
+from threading import Thread
+import logging
+import subprocess
 from flask import Blueprint, jsonify, render_template, request
 from flask import current_app as app
 from models.models import ReminderModel
@@ -196,6 +199,11 @@ def upgrade_pi():
                 "status": "Upgrades are not permitted in testing environments!"
             })
         # Adding threading to upgrade
+        update = Thread(
+            target=upgrade_pi_process,
+
+        )
+        update.start()
         return jsonify({
             "status": "Upgrade is running, your pi will reboot shortly!"
         })
@@ -203,6 +211,36 @@ def upgrade_pi():
         "upgrade_pi.html",
         version=version,
     )
+
+def upgrade_pi_process():
+    """
+    Start a sub process to upgrade and reboot the pi.
+    Logs the output to a log file in deployment/upgrade_logs
+
+    Returns:
+         boolean True/False
+    """
+    cmd = "./deployment/upgrade_pi.sh"
+    proc = subprocess.Popen(
+        "/bin/bash", shell=False, stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
+    (stdout, stderr) = proc.communicate(cmd.encode("utf-8"))
+
+    # Setup custom logger for upgrade
+    timestamp = datetime.now().strftime('%Y_%m_%d')
+    file = "./deployment/logs/{d}_upgrade.log".format(d=timestamp)
+    upgrade_handler = logging.FileHandler(file)
+    upgrade_logger = logging.getLogger("upgrade_logging")
+    upgrade_logger.setLevel(logging.INFO)
+    upgrade_logger.addHandler(upgrade_handler)
+
+    upgrade_logger.info(stdout)
+    upgrade_logger.error(stderr)
+
+    return True
+
+
 ##########################################################
 """
 This Section contains the endpoint for the Top Banner
