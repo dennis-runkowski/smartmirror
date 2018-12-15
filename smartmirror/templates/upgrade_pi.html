@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Setup</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <script type=text/javascript
+          src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type=text/javascript>
+      var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+
+
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script type="text/javascript"
+          src="{{ url_for('static', filename='js/upgrade.js') }}"></script>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
+  <link rel="stylesheet" type="text/css"
+        href="../static/css/setup.css">
+</head>
+<body>
+  <nav class="black">
+    <div class="nav-wrapper">
+      <ul class="right">
+        <li><a href="/setup">Setup</a></li>
+        <li><a href="#">Restart</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <div class="center">
+      <h1>SmartMirror Upgrade</h1>
+      <div>
+        <i>version: {{ version }}</i>
+      </div>
+      <div class="red-text">
+        **WARNING** Only upgrade your SmartMirror when it is running on your Raspberry Pi or your Production Environment!
+      </div>
+      </br>
+      <form>
+        <button id="upgrade" class="btn waves-effect waves-light">Upgrade
+          <i class="material-icons right">send</i>
+        </button>
+      </form>
+    </div>
+  </main>
+  <footer class="page-footer black">
+    <div class="footer-copyright">
+      <div class="container center">
+        <a class="white-text" href="https://github.com/denrun-p/smartmirror/blob/master/README.md">Documentation</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

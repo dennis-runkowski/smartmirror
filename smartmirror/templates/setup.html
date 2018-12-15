@@ -24,7 +24,7 @@
   <nav class="black">
     <div class="nav-wrapper">
       <ul class="right">
-        <li><a href="#">Upgrade</a></li>
+        <li><a href="/upgrade">Upgrade</a></li>
         <li><a href="#">Restart</a></li>
       </ul>
     </div>
@@ -45,8 +45,17 @@
               <select id="top_banner_select">
                 <option value="" disabled selected>Choose your plugin</option>
                 {% for plugin in top_banner %}
-                  <option id="{{ plugin }}" value="{{ plugin }}">{{ top_banner[plugin]["name"] }}</option>
+                  {% if plugin in current_plugins["top_banner"] %}
+                    <option id="{{ plugin }}" value="{{ plugin }}" selected>
+                      {{ top_banner[plugin]["name"] }}
+                    </option>
+                  {% else %}
+                    <option id="{{ plugin }}" value="{{ plugin }}">
+                      {{ top_banner[plugin]["name"] }}
+                    </option>
+                  {% endif %}
                 {% endfor %}
+                <option value="">None</option>
               </select>
               <label>Top Banner</label>
             </div>
@@ -57,8 +66,17 @@
               <select id="left_panel_select">
                 <option value="" disabled selected>Choose your plugin</option>
                 {% for plugin in left_panel %}
-                  <option id="{{ plugin }}" value="{{ plugin }}">{{ left_panel[plugin]["name"] }}</option>
+                  {% if plugin in current_plugins["left_panel"] %}
+                    <option id="{{ plugin }}" value="{{ plugin }}" selected>
+                      {{ left_panel[plugin]["name"] }}
+                    </option>
+                  {% else %}
+                    <option id="{{ plugin }}" value="{{ plugin }}">
+                      {{ left_panel[plugin]["name"] }}
+                    </option>
+                  {% endif %}
                 {% endfor %}
+                <option value="">None</option>
               </select>
               <label>Left Panel</label>
             </div>
@@ -66,22 +84,40 @@
             <div class="col s4 center">
               <div class="row">
                 <div class="input-field col s12 center">
-                  <select>
+                  <select id="right_top_select">
                     <option value="" disabled selected>Choose your plugin</option>
                     {% for plugin in right_top %}
-                      <option value="{{ plugin }}">{{ plugin }}</option>
+                      {% if plugin in current_plugins["right_top_panel"] %}
+                        <option id="{{ plugin }}" value="{{ plugin }}" selected>
+                          {{ right_top[plugin]["name"] }}
+                        </option>
+                      {% else %}
+                        <option id="{{ plugin }}" value="{{ plugin }}">
+                          {{ right_top[plugin]["name"] }}
+                        </option>
+                      {% endif %}
                     {% endfor %}
+                    <option value="">None</option>
                   </select>
                   <label>Right Top Panel</label>
                 </div>
               </div>
               <div class="row">
                 <div class="input-field col s12 center">
-                  <select>
+                  <select id="right_bottom_select">
                     <option value="" disabled selected>Choose your plugin</option>
                     {% for plugin in right_bottom %}
-                      <option value="{{ plugin }}">{{ plugin }}</option>
+                      {% if plugin in current_plugins["right_bottom_panel"] %}
+                        <option id="{{ plugin }}" value="{{ plugin }}" selected>
+                          {{ right_bottom[plugin]["name"] }}
+                        </option>
+                      {% else %}
+                        <option id="{{ plugin }}" value="{{ plugin }}">
+                          {{ right_bottom[plugin]["name"] }}
+                        </option>
+                      {% endif %}
                     {% endfor %}
+                    <option value="">None</option>
                   </select>
                   <label>Right Bottom Panel</label>
                 </div>
@@ -91,11 +127,20 @@
           <div id="setup_bottom" class="row">
             <div class="col s4"></div>
             <div class="input-field col s4 center">
-              <select>
+              <select id="bottom_banner_select">
                 <option value="" disabled selected>Choose your plugin</option>
                 {% for plugin in bottom_banner %}
-                <option value="{{ plugin }}">{{ plugin }}</option>
+                  {% if plugin in current_plugins["bottom_banner"] %}
+                    <option id="{{ plugin }}" value="{{ plugin }}" selected>
+                      {{ bottom_banner[plugin]["name"] }}
+                    </option>
+                  {% else %}
+                    <option id="{{ plugin }}" value="{{ plugin }}">
+                      {{ bottom_banner[plugin]["name"] }}
+                    </option>
+                  {% endif %}
                 {% endfor %}
+                <option value="">None</option>
               </select>
               <label>Bottom Banner</label>
             </div>
@@ -103,16 +148,30 @@
           </div>
         </div>
         <div id="setup_config" class="col s12 z-depth-4 card-panel">
+          <div>
+            <i>Please confirm these are the plugins you selected and enter any necessary config.</i>
+          </div>
+          <div id="errors"></div>
           <form id="plugin_form">
             <div id="top_form"></div>
             <div id="left_form"></div>
+            <div id="right_top_form"></div>
+            <div id="right_bottom_form"></div>
+            <div id="bottom_form"></div>
           </form>
         </div>
       </div>
     </div>
-    <div class="row">
+    <div id="hide_next" class="row">
       <div class="input-field col s12 center">
         <button id="next_setup" class="btn waves-effect waves-light">Next Step
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
+    </div>
+    <div id="hide_save" class="row">
+      <div class="input-field col s12 center">
+        <button id="save_setup" class="btn waves-effect waves-light">Save
           <i class="material-icons right">send</i>
         </button>
       </div>

@@ -1,6 +1,7 @@
 """Main collection of views."""
 from datetime import datetime
 import json
+import yaml
 from flask import Blueprint, jsonify, render_template, request
 from flask import current_app as app
 from models.models import ReminderModel
@@ -90,7 +91,8 @@ def smartmirror():
         bottom_banner=bottom_banner_temp
     )
 
-@blueprint.route("/setup", methods=["GET", "POST"])
+
+@blueprint.route("/setup", methods=["GET"])
 def setup_smartmirror():
     """configure your smartmirror from the frontend"""
     version = app.config.get("SM_VERSION")
@@ -101,8 +103,14 @@ def setup_smartmirror():
     right_bottom_plugins = plugin_lib.get("right_bottom_panel")
     bottom_banner_plugins = plugin_lib.get("bottom_banner")
 
-    # with open("test.json", "w") as f:
-    #     json.dump({"test": "test"}, f)
+    # Get the current plugins
+    current_plugins = {
+        "top_banner": app.config.get("top_banner", {}).keys(),
+        "left_panel": app.config.get("left_panel", {}).keys(),
+        "right_top_panel": app.config.get("right_top_panel", {}).keys(),
+        "right_bottom_panel": app.config.get("right_bottom_panel", {}).keys(),
+        "bottom_banner": app.config.get("bottom_banner", {}).keys()
+    }
     return render_template(
         "setup.html",
         version=version,
@@ -110,18 +118,91 @@ def setup_smartmirror():
         left_panel=left_panel_plugins,
         right_top=right_top_plugins,
         right_bottom=right_bottom_plugins,
-        bottom_banner=bottom_banner_plugins
+        bottom_banner=bottom_banner_plugins,
+        current_plugins=current_plugins
     )
 @blueprint.route("/setup_config/<panel>/<plugin>", methods=["GET"])
 def setup_plugin_config(panel, plugin):
     """Get the config for a plugin"""
     with open("plugin_library.json", "r") as f:
         data = json.load(f)
-    print data
     details = data.get(panel, {}).get(plugin, {})
     return jsonify(details)
 
 
+@blueprint.route("/save_plugin_config", methods=["POST"])
+def save_config():
+    """Save plugin data to the yml file"""
+
+    with open("plugin_library.json", "r") as f:
+        plugin_library = json.load(f)
+
+    form_data = request.form
+    errors = []
+    config = {}
+
+    for field in plugin_library:
+        plugin = form_data.get(field, False)
+        if plugin:
+            # Check if the plugin requires config and ensure it was sent
+            plugin_config = plugin_library[field][plugin]["config_fields"]
+            if plugin_config:
+                # Build the form field i.e left_panel_api_key
+                for key in plugin_config:
+                    form_config = "{f}_{p}".format(f=field, p=key)
+                    if form_data.get(form_config, False):
+                        config[field] = {plugin: True}
+                        config[field][plugin] = {key: form_data[form_config]}
+                    else:
+                        # Missing field from the form
+                        error_message = u"Please fill in the {f} field!".format(
+                            f=key
+                        )
+                        errors.append(error_message)
+            else:
+                config[field] = {plugin: True}
+    if errors:
+        return jsonify({"status": "error", "message": errors})
+    config["secret_key"] = app.config["SECRET_KEY"]
+    if app.config["ENV"] == "production":
+        config["environment"] = 'production'
+    else:
+        config["environment"] = 'testing'
+    # Save the new config to the yml file
+    with open('config.yml', 'w') as output:
+        yaml.safe_dump(
+            config,
+            output,
+            default_flow_style=False,
+            allow_unicode=True,
+            encoding='utf-8'
+        )
+
+    return jsonify({"status": "success"})
+
+
+@blueprint.route("/upgrade", methods=["GET", "POST"])
+def upgrade_pi():
+    """
+    Route to upgrade the pi to the latest version.
+
+    WARNING - Only run this on the pi - this could overwrite you
+    local repo!!
+    """
+    version = app.config.get("SM_VERSION")
+    if request.method == "POST":
+        if app.config.get("environment") == "testing":
+            return jsonify({
+                "status": "Upgrades are not permitted in testing environments!"
+            })
+        # Adding threading to upgrade
+        return jsonify({
+            "status": "Upgrade is running, your pi will reboot shortly!"
+        })
+    return render_template(
+        "upgrade_pi.html",
+        version=version,
+    )
 ##########################################################
 """
 This Section contains the endpoint for the Top Banner

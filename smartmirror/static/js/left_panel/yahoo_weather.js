@@ -18,7 +18,6 @@ callOnInterval(60000, '/left_panel',
        var location;
 
        if (data) {
-           console.log(data["conditions"][0])
            var icon = data["conditions"][0]["link"];
            var location = data["conditions"][0]["location"]
            var current_temp = data["conditions"][0]["temp"];

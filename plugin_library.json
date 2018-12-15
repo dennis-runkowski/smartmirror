@@ -21,14 +21,14 @@
       }
     },
     "stocks": {
-      "name":"Stocks",
+      "name": "Stocks",
       "config_fields": {
         "api_key": "Alpha Advantage API",
         "tickers": "Enter the tickers separated with a comma."
       }
     },
     "wunderground": {
-      "name":"WunderGround API (deprecated)",
+      "name": "WunderGround API (deprecated)",
       "config_fields": {
         "api_key": "WunderGround API Key",
         "state": "State (i.e NJ)",
@@ -36,16 +36,40 @@
       }
     }
   },
-  "right_top_panel": [
-    "Date and Time"
-  ],
-  "right_bottom_panel": [
-    "New Jesey Transit - NJT API required",
-    "Rss Feed"
-  ],
-  "bottom_banner": [
-    "Us Holidays",
-    "Chuck Noris Jokes",
-    "Reminders"
-  ]
+  "right_top_panel": {
+    "time": {
+      "name": "Date and Time",
+      "config_fields": {}
+    }
+  },
+  "right_bottom_panel": {
+    "njt": {
+      "name": "New Jersey Transit - API required",
+      "config_fields": {
+        "username": "NJT username",
+        "password": "NJT password",
+        "train_station": "NJT train station"
+      }
+    },
+    "rss": {
+      "name": "Rss Feed",
+      "config_fields": {
+        "rss_feed": "Rss Link"
+      }
+    }
+  },
+  "bottom_banner": {
+    "us_holidays": {
+      "name": "Us Holidays",
+      "config_fields": {}
+    },
+    "chuck_norris": {
+      "name": "Chuck Noris Jokes",
+      "config_fields": {}
+    },
+    "reminders": {
+      "name": "Reminders",
+      "config_fields": {}
+    }
+  }
 }

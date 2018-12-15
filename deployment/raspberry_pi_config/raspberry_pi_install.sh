@@ -36,6 +36,19 @@ else
     exit 1
 fi
 
+if [ -d "/srv/smartmirror" ]; then
+    echo "It looks like the SmartMirror was installed already, would you like to overwrite (y/n)?"
+
+    read overwrite
+
+    if [ "$overwrite" == "n" ]; then
+        echo "Stopping the installation!"
+        exit 1
+    fi
+
+    sudo rm -rf /srv/smartmirror
+fi
+
 sudo apt-get update && sudo apt-get upgrade
 
 mkdir -p /srv
@@ -46,6 +59,9 @@ unzip -q master.zip && mv -f smartmirror-master smartmirror
 mv -f smartmirror /srv/
 
 sudo apt-get update && sudo apt-get upgrade
+
+# Install the screensaver applicaton
+sudo apt-get install xscreensaver
 
 # Create group
 sudo getent group smartmirror || addgroup smartmirror
@@ -64,6 +80,9 @@ mkdir -p /home/pi/.config/lxsession/LXDE-pi
 
 sudo rm -f /home/pi/.config/lxsession/LXDE-pi/autostart
 sudo mv autostart /home/pi/.config/lxsession/LXDE-pi/
+
+# Make the pi have a static ip
+sudo cat static.txt >> /etc/dhcpcd.conf
 
 echo "###################################"
 echo " Installing Virtualenv and Wrapper"
