@@ -82,7 +82,7 @@ sudo rm -f /home/pi/.config/lxsession/LXDE-pi/autostart
 sudo mv /srv/smartmirror/deployment/raspberry_pi_config/autostart /home/pi/.config/lxsession/LXDE-pi/
 
 # Make the pi have a static ip
-sudo cat static.txt >> /etc/dhcpcd.conf
+sudo cat /srv/smartmirror/deployment/raspberry_pi_config/static.txt >> /etc/dhcpcd.conf
 
 echo "###################################"
 echo " Installing Virtualenv and Wrapper"
