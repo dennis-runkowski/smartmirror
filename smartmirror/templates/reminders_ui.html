@@ -9,6 +9,8 @@
       var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 
 
+
+
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script type="text/javascript"
@@ -90,9 +92,8 @@
               <div id="comment_error" class="col s12"></div>
             </div>
             <div class="input-field col s12">
-                            <textarea id="comment" class="materialize-textarea"
-                                      name="comment"
-                                      data-length="120"></textarea>
+              <textarea id="comment" class="materialize-textarea" name="comment"
+                        data-length="120"></textarea>
               <label for="comment">Reminder</label>
             </div>
           </div>
@@ -111,9 +112,11 @@
         <h5 class="center"> Delete a Reminder!</h5>
         <table>
           <thead>
-          <th>Start Date</th>
-          <th>End Date</th>
-          <th>Reminder</th>
+          <tr>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Reminder</th>
+          </tr>
           </thead>
           <tbody id="reminder_table">
           </tbody>

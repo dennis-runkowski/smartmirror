@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Setup</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <script type=text/javascript
+          src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type=text/javascript>
+      var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+
+
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script type="text/javascript"
+          src="{{ url_for('static', filename='js/setup.js') }}"></script>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
+  <link rel="stylesheet" type="text/css"
+        href="../static/css/setup.css">
+</head>
+<body>
+  <nav class="black">
+    <div class="nav-wrapper">
+      <ul class="right">
+        <li><a href="/upgrade">Upgrade</a></li>
+        <li><a href="#">Restart</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <div class="center">
+      <h1>SmartMirror Setup</h1>
+      <div>
+        <i>version: {{ version }}</i>
+      </div>
+    </div>
+    <div class="valign-wrapper">
+      <div class="container">
+        <div id="setup_view" class="col s12 z-depth-4 card-panel">
+          <div id="setup_top" class="row">
+            <div class="col s4"></div>
+            <div class="input-field col s4 center">
+              <select id="top_banner_select">
+                <option value="" disabled selected>Choose your plugin</option>
+                {% for plugin in top_banner %}
+                  {% if plugin in current_plugins["top_banner"] %}
+                    <option id="{{ plugin }}" value="{{ plugin }}" selected>
+                      {{ top_banner[plugin]["name"] }}
+                    </option>
+                  {% else %}
+                    <option id="{{ plugin }}" value="{{ plugin }}">
+                      {{ top_banner[plugin]["name"] }}
+                    </option>
+                  {% endif %}
+                {% endfor %}
+                <option value="">None</option>
+              </select>
+              <label>Top Banner</label>
+            </div>
+            <div class="col s4"></div>
+          </div>
+          <div id="setup_middle" class="row">
+            <div class="input-field col s4 center">
+              <select id="left_panel_select">
+                <option value="" disabled selected>Choose your plugin</option>
+                {% for plugin in left_panel %}
+                  {% if plugin in current_plugins["left_panel"] %}
+                    <option id="{{ plugin }}" value="{{ plugin }}" selected>
+                      {{ left_panel[plugin]["name"] }}
+                    </option>
+                  {% else %}
+                    <option id="{{ plugin }}" value="{{ plugin }}">
+                      {{ left_panel[plugin]["name"] }}
+                    </option>
+                  {% endif %}
+                {% endfor %}
+                <option value="">None</option>
+              </select>
+              <label>Left Panel</label>
+            </div>
+            <div class="col s4 center"></div>
+            <div class="col s4 center">
+              <div class="row">
+                <div class="input-field col s12 center">
+                  <select id="right_top_select">
+                    <option value="" disabled selected>Choose your plugin</option>
+                    {% for plugin in right_top %}
+                      {% if plugin in current_plugins["right_top_panel"] %}
+                        <option id="{{ plugin }}" value="{{ plugin }}" selected>
+                          {{ right_top[plugin]["name"] }}
+                        </option>
+                      {% else %}
+                        <option id="{{ plugin }}" value="{{ plugin }}">
+                          {{ right_top[plugin]["name"] }}
+                        </option>
+                      {% endif %}
+                    {% endfor %}
+                    <option value="">None</option>
+                  </select>
+                  <label>Right Top Panel</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12 center">
+                  <select id="right_bottom_select">
+                    <option value="" disabled selected>Choose your plugin</option>
+                    {% for plugin in right_bottom %}
+                      {% if plugin in current_plugins["right_bottom_panel"] %}
+                        <option id="{{ plugin }}" value="{{ plugin }}" selected>
+                          {{ right_bottom[plugin]["name"] }}
+                        </option>
+                      {% else %}
+                        <option id="{{ plugin }}" value="{{ plugin }}">
+                          {{ right_bottom[plugin]["name"] }}
+                        </option>
+                      {% endif %}
+                    {% endfor %}
+                    <option value="">None</option>
+                  </select>
+                  <label>Right Bottom Panel</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="setup_bottom" class="row">
+            <div class="col s4"></div>
+            <div class="input-field col s4 center">
+              <select id="bottom_banner_select">
+                <option value="" disabled selected>Choose your plugin</option>
+                {% for plugin in bottom_banner %}
+                  {% if plugin in current_plugins["bottom_banner"] %}
+                    <option id="{{ plugin }}" value="{{ plugin }}" selected>
+                      {{ bottom_banner[plugin]["name"] }}
+                    </option>
+                  {% else %}
+                    <option id="{{ plugin }}" value="{{ plugin }}">
+                      {{ bottom_banner[plugin]["name"] }}
+                    </option>
+                  {% endif %}
+                {% endfor %}
+                <option value="">None</option>
+              </select>
+              <label>Bottom Banner</label>
+            </div>
+            <div class="col s4"></div>
+          </div>
+        </div>
+        <div id="setup_config" class="col s12 z-depth-4 card-panel">
+          <div>
+            <i>Please confirm these are the plugins you selected and enter any necessary config.</i>
+          </div>
+          <div id="errors"></div>
+          <form id="plugin_form">
+            <div id="top_form"></div>
+            <div id="left_form"></div>
+            <div id="right_top_form"></div>
+            <div id="right_bottom_form"></div>
+            <div id="bottom_form"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div id="hide_next" class="row">
+      <div class="input-field col s12 center">
+        <button id="next_setup" class="btn waves-effect waves-light">Next Step
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
+    </div>
+    <div id="hide_save" class="row">
+      <div class="input-field col s12 center">
+        <button id="save_setup" class="btn waves-effect waves-light">Save
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
+    </div>
+  </main>
+  <footer class="page-footer black">
+    <div class="footer-copyright">
+      <div class="container center">
+        <a class="white-text" href="https://github.com/denrun-p/smartmirror/blob/master/README.md">Documentation</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

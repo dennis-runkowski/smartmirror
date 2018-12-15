@@ -1,0 +1,64 @@
+#setup_view {
+    height: 500px;
+    background-color: lightgrey;
+}
+#setup_top {
+    height: 15%;
+}
+#setup_middle {
+    height: 65%;
+}
+#setup_bottom {
+    height: 20%;
+}
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  font-family: Andale Mono, monospace;
+}
+main {
+  flex: 1 0 auto;
+}
+#setup_config {
+    display: none;
+}
+#hide_save {
+    display: none;
+}
+#errors {
+    color: red;
+}
+@media only screen and (min-width : 601px) and (max-width : 1260px) {
+	.toast {
+		width: 100%;
+		border-radius: 0;
+	}
+}
+
+@media only screen and (min-width : 1261px) {
+	.toast {
+		width: 100%;
+		border-radius: 0;
+	}
+}
+
+@media only screen and (min-width : 601px) and (max-width : 1260px) {
+	#toast-container {
+		min-width: 100%;
+		bottom: 0%;
+		top: 90%;
+		right: 0%;
+		left: 0%;
+	}
+}
+
+@media only screen and (min-width : 1261px) {
+	#toast-container {
+		min-width: 100%;
+		bottom: 0%;
+		top: 90%;
+		right: 0%;
+		left: 0%;
+	}
+}
