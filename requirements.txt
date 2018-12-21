@@ -9,3 +9,5 @@ bs4
 feedparser
 uwsgi
 flask_wtf
+rq
+redis
