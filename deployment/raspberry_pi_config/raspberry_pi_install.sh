@@ -97,6 +97,10 @@ echo "###############################"
 
 sudo apt install redis-server
 
+# Create redis worker service
+sudo mv /srv/smartmirror/deployment/raspberry_pi_config/queue.service /etc/systemd/system
+sudo systemctl enable queue.service
+
 echo "###############################"
 echo " Installing Nginx"
 echo "###############################"

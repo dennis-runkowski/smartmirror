@@ -1,0 +1,14 @@
+[Unit]
+Description=redis queue worker
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/srv/smartmirror/deployment/redis_worker/
+Environment=PYTHONPATH=/srv/smartmirror/deployment/redis_worker/
+ExecStart=/srv/virtualenv/bin/python worker.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

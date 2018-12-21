@@ -5,11 +5,19 @@ import yaml
 from threading import Thread
 import logging
 import subprocess
+from rq import Queue
+import redis
+from utils import restart_pi_process
 from flask import Blueprint, jsonify, render_template, request
 from flask import current_app as app
 from models.models import ReminderModel
 from plugins import top_banner, left_panel,\
     right_top, right_bottom, bottom_banner
+
+# Redis Queue connection
+redis_url = 'redis://localhost:6379'
+conn = redis.from_url(redis_url)
+q = Queue(connection=conn)
 
 # Blue print for the main display
 blueprint = Blueprint(
@@ -199,11 +207,11 @@ def upgrade_pi():
                 "status": "Upgrades are not permitted in testing environments!"
             })
         # Adding threading to upgrade
-        update = Thread(
-            target=upgrade_pi_process,
-
-        )
-        update.start()
+        # update = Thread(
+        #     target=restart_pi_process,
+        # )
+        # update.start()
+        update = q.enqueue(restart_pi_process)
         return jsonify({
             "status": "Upgrade is running, your pi will reboot shortly!"
         })
@@ -211,34 +219,6 @@ def upgrade_pi():
         "upgrade_pi.html",
         version=version,
     )
-
-def upgrade_pi_process():
-    """
-    Start a sub process to upgrade and reboot the pi.
-    Logs the output to a log file in deployment/upgrade_logs
-
-    Returns:
-         boolean True/False
-    """
-    cmd = "./deployment/upgrade_pi.sh"
-    proc = subprocess.Popen(
-        "/bin/bash", shell=False, stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE
-    )
-    (stdout, stderr) = proc.communicate(cmd.encode("utf-8"))
-
-    # Setup custom logger for upgrade
-    timestamp = datetime.now().strftime('%Y_%m_%d')
-    file = "./deployment/logs/{d}_upgrade.log".format(d=timestamp)
-    upgrade_handler = logging.FileHandler(file)
-    upgrade_logger = logging.getLogger("upgrade_logging")
-    upgrade_logger.setLevel(logging.INFO)
-    upgrade_logger.addHandler(upgrade_handler)
-
-    upgrade_logger.info(stdout)
-    upgrade_logger.error(stderr)
-
-    return True
 
 
 ##########################################################
