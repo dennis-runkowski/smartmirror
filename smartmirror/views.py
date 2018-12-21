@@ -7,7 +7,7 @@ import logging
 import subprocess
 from rq import Queue
 import redis
-from utils import restart_pi_process
+from utils import restart_pi_process, upgrade_pi_process
 from flask import Blueprint, jsonify, render_template, request
 from flask import current_app as app
 from models.models import ReminderModel
@@ -206,12 +206,7 @@ def upgrade_pi():
             return jsonify({
                 "status": "Upgrades are not permitted in testing environments!"
             })
-        # Adding threading to upgrade
-        # update = Thread(
-        #     target=restart_pi_process,
-        # )
-        # update.start()
-        update = q.enqueue(restart_pi_process)
+        update = q.enqueue(upgrade_pi_process)
         return jsonify({
             "status": "Upgrade is running, your pi will reboot shortly!"
         })
@@ -220,6 +215,28 @@ def upgrade_pi():
         version=version,
     )
 
+
+@blueprint.route("/reboot", methods=["GET", "POST"])
+def reboot_pi():
+    """
+    Route to reboot the pi.
+
+    WARNING - Only run this on the pi - this will reboot the server
+    """
+    version = app.config.get("SM_VERSION")
+    if request.method == "POST":
+        if app.config.get("environment") == "testing":
+            return jsonify({
+                "status": "Restarting is not permitted in testing environments!"
+            })
+        update = q.enqueue(restart_pi_process)
+        return jsonify({
+            "status": "Pi is restarting."
+        })
+    return render_template(
+        "reboot_pi.html",
+        version=version,
+    )
 
 ##########################################################
 """

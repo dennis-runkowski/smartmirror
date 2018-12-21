@@ -3,7 +3,14 @@
 import logging
 import subprocess
 from datetime import datetime
-from flask import current_app as app
+
+# Setup custom logger for upgrade
+timestamp = datetime.now().strftime('%Y_%m_%d')
+file = "./deployment/logs/{d}_redis_job.log".format(d=timestamp)
+handler = logging.FileHandler(file)
+logger = logging.getLogger("redis_logging")
+logger.setLevel(logging.INFO)
+logger.addHandler(handler)
 
 def restart_pi_process():
     """
@@ -18,9 +25,11 @@ def restart_pi_process():
             stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
         (stdout, stderr) = proc.communicate(cmd.encode("utf-8"))
+        logger.info(stdout)
+        logger.error(stderr)
         return True
     except Exception as e:
-        app.logger.error(e)
+        logger.error(e)
         return False
 
 def upgrade_pi_process():
@@ -32,21 +41,15 @@ def upgrade_pi_process():
          boolean True/False
     """
     cmd = "./deployment/upgrade_pi.sh"
-    proc = subprocess.Popen(
-        "/bin/bash", shell=False, stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE
-    )
-    (stdout, stderr) = proc.communicate(cmd.encode("utf-8"))
-
-    # Setup custom logger for upgrade
-    timestamp = datetime.now().strftime('%Y_%m_%d')
-    file = "./deployment/logs/{d}_upgrade.log".format(d=timestamp)
-    upgrade_handler = logging.FileHandler(file)
-    upgrade_logger = logging.getLogger("upgrade_logging")
-    upgrade_logger.setLevel(logging.INFO)
-    upgrade_logger.addHandler(upgrade_handler)
-
-    upgrade_logger.info(stdout)
-    upgrade_logger.error(stderr)
-
-    return True
+    try:
+        proc = subprocess.Popen(
+            "/bin/bash", shell=False, stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )
+        (stdout, stderr) = proc.communicate(cmd.encode("utf-8"))
+        logger.info(stdout)
+        logger.error(stderr)
+        return True
+    except Exception as e:
+        logger.error(e)
+        return False

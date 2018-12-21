@@ -12,7 +12,7 @@
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script type="text/javascript"
-          src="{{ url_for('static', filename='js/upgrade.js') }}"></script>
+          src="{{ url_for('static', filename='js/reboot.js') }}"></script>
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -25,22 +25,22 @@
     <div class="nav-wrapper">
       <ul class="right">
         <li><a href="/setup">Setup</a></li>
-        <li><a href="/reboot">Restart</a></li>
+        <li><a href="/upgrade">Upgrade</a></li>
       </ul>
     </div>
   </nav>
   <main>
     <div class="center">
-      <h1>SmartMirror Upgrade</h1>
+      <h1>SmartMirror Restart</h1>
       <div>
         <i>version: {{ version }}</i>
       </div>
       <div class="red-text">
-        **WARNING** Only upgrade your SmartMirror when it is running on your Raspberry Pi or your Production Environment!
+        **WARNING** Only restart your SmartMirror when it is running on your Raspberry Pi or your Production Environment!
       </div>
       </br>
       <form>
-        <button id="upgrade" class="btn waves-effect waves-light">Upgrade
+        <button id="restart" class="btn waves-effect waves-light">Restart
           <i class="material-icons right">send</i>
         </button>
       </form>
