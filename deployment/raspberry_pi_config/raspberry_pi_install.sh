@@ -92,6 +92,12 @@ pip install virtualenv
 virtualenv /srv/virtualenv
 
 echo "###############################"
+echo " Installing Redis"
+echo "###############################"
+
+sudo apt install redis-server
+
+echo "###############################"
 echo " Installing Nginx"
 echo "###############################"
 
