@@ -5,9 +5,9 @@ After=network.target
 [Service]
 Type=simple
 User=pi
-WorkingDirectory=/srv/smartmirror/deployment/redis_worker/
-Environment=PYTHONPATH=/srv/smartmirror/deployment/redis_worker/
-ExecStart=/srv/virtualenv/bin/python worker.py
+WorkingDirectory=/srv/smartmirror/
+Environment=PYTHONPATH=/srv/smartmirror/
+ExecStart=/srv/virtualenv/bin/python deployment/redis_worker/worker.py
 Restart=on-failure
 
 [Install]
