@@ -45,8 +45,10 @@ if [ -d "/srv/smartmirror" ]; then
         echo "Stopping the installation!"
         exit 1
     fi
-
+    set +e
     sudo rm -rf /srv/smartmirror
+    sudo systemctl stop queue.service
+    set -e
 fi
 
 sudo apt-get update && sudo apt-get upgrade

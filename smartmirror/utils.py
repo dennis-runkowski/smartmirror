@@ -5,18 +5,18 @@ import subprocess
 from datetime import datetime
 
 # Setup custom logger for upgrade
-timestamp = datetime.now().strftime('%Y_%m_%d')
-file = "./deployment/logs/{d}_redis_job.log".format(d=timestamp)
-handler = logging.FileHandler(file)
-logger = logging.getLogger("redis_logging")
-logger.setLevel(logging.INFO)
-logger.addHandler(handler)
+# timestamp = datetime.now().strftime('%Y_%m_%d')
+# file = "./deployment/logs/{d}_redis_job.log".format(d=timestamp)
+# handler = logging.FileHandler(file)
+# logger = logging.getLogger("redis_logging")
+# logger.setLevel(logging.INFO)
+# logger.addHandler(handler)
 
 def restart_pi_process():
     """
     Reboot the pi using the redis queue worker.
     Returns:
-         boolean True/False
+         output from the upgrade
     """
     cmd = "sudo reboot"
     try:
@@ -25,12 +25,10 @@ def restart_pi_process():
             stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
         (stdout, stderr) = proc.communicate(cmd.encode("utf-8"))
-        logger.info(stdout)
-        logger.error(stderr)
-        return True
+        output = [stdout, stderr]
+        return output
     except Exception as e:
-        logger.error(e)
-        return False
+        return e
 
 def upgrade_pi_process():
     """
@@ -38,7 +36,7 @@ def upgrade_pi_process():
     Logs the output to a log file in deployment/upgrade_logs
 
     Returns:
-         boolean True/False
+         output from the upgrade
     """
     cmd = "./deployment/upgrade_pi.sh"
     try:
@@ -47,9 +45,8 @@ def upgrade_pi_process():
             stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
         (stdout, stderr) = proc.communicate(cmd.encode("utf-8"))
-        logger.info(stdout)
-        logger.error(stderr)
-        return True
+
+        output = [stdout, stderr]
+        return output
     except Exception as e:
-        logger.error(e)
-        return False
+        return e

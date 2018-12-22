@@ -207,6 +207,7 @@ def upgrade_pi():
                 "status": "Upgrades are not permitted in testing environments!"
             })
         update = q.enqueue(upgrade_pi_process)
+        app.logger.info(update)
         return jsonify({
             "status": "Upgrade is running, your pi will reboot shortly!"
         })
@@ -229,7 +230,8 @@ def reboot_pi():
             return jsonify({
                 "status": "Restarting is not permitted in testing environments!"
             })
-        update = q.enqueue(restart_pi_process)
+        reboot = q.enqueue(restart_pi_process)
+        app.logger.info(reboot)
         return jsonify({
             "status": "Pi is restarting."
         })
