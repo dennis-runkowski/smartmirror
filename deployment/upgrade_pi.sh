@@ -3,7 +3,7 @@ set -e
 
 sudo rm -rf /tmp/package
 
-mkdir /tmp/package
+mkdir -p /tmp/package
 
 cd /tmp/package
 
