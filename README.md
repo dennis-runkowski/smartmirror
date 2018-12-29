@@ -2,12 +2,24 @@
 
 `*Work in Progress*`
 
-This tutorial will show you how to create your own smartmirror with a raspberry pi and a two way mirror. The smartmirror is powered by a raspberry pi running a flask application. The application is plugable with customed plugins to fit your needs.
+This tutorial will show you how to create your own smartmirror with a raspberry pi and a two way mirror. The smartmirror is powered by a raspberry pi running a flask application. Each plugin can be customized to fit you needs.
 
 ![Alt text](img/smartmirror.JPG?raw=true "Smartmirror")
 
+## Table Of Contents
+- [Getting Started](#Getting Started)
+- [Requirements](#Requirements)
+- [Raspberry Pi Install](#Raspberry Pi Install)
+- [Configuring](#Configuring)
+- [Local Setup](#Local Setup)
+- [Local Deployment](#Local Deployment)
+- [Updating](#Updating) 
+- [Architecture](#Architecture)
+
 ## Getting Started
-### Requirements
+Placeholder
+
+## Requirements
 I've included some links to the parts, but these are only recommendations. You can use cheaper parts, this is just what I had success with.
 * Currently built for `linux operating systems` only (windows coming soon!)
 * `Designed for a 24 inch monitor`
@@ -16,13 +28,18 @@ I've included some links to the parts, but these are only recommendations. You c
 * Raspberry Pi 3 (https://www.amazon.com/gp/product/B01C6Q2GSY/ref=oh_aui_search_detailpage?ie=UTF8&psc=1)
 * Two way mirror (https://www.amazon.com/gp/product/B06Y2JMH7C/ref=oh_aui_detailpage_o00_s01?ie=UTF8&psc=1  )
 * 24 inch in ultra thin monitor (https://www.amazon.com/gp/product/B01HIA63AU/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1)
-### Install
+
+## Raspberry Pi Install
 1. Make sure you change the default password to your pi for security reasons.
 2. Setup ssh on you pi.
 3. Install the pi by opening a terminal and running this command on your pi. Follow all the instructions during the installation.
 ```bash
 sudo bash -c "$(curl -sL https://raw.githubusercontent.com/denrun-p/smartmirror/master/deployment/raspberry_pi_config/raspberry_pi_install.sh)"
 ```
+
+## Configuring
+PlaceHolder
+
 ### Local Setup
 The SmartMirror application was made to be developer friendly. To get started setup a development environment on your local machine, follow the steps below:
 
@@ -120,18 +137,15 @@ Completed!
 ```
 ***Follow the steps in the smartmirror_setup.py script. I recommend starting with one or two plugins for the first run. For a deeper dive into the application see the `Application Details` section.***
 
-### Application Details
+## Local Deployment
 Placeholder
 
-### Raspberry Pi Setup
+## Updating
+PlaceHolder
 
+## Architecture
 Placeholder
 
-### Deployment
-
-### Physical Setup
-
-Placeholder
 
 ### TO DO
 * Testing
