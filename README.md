@@ -7,27 +7,40 @@ This tutorial will show you how to create your own smartmirror with a raspberry 
 ![Alt text](img/smartmirror.JPG?raw=true "Smartmirror")
 
 ## Table Of Contents
-- [Getting Started](#Getting-Started)
+- [Overview](#Overview)
 - [Requirements](#Requirements)
 - [Raspberry Pi Install](#Raspberry-Pi-Install)
 - [Configuring](#Configuring)
-- [Local Setup](#Local Setup)
+- [Local Setup](#Local-Setup)
 - [Local Deployment](#Local-Deployment)
 - [Updating](#Updating) 
 - [Architecture](#Architecture)
 
-## Getting Started
-Placeholder
+## Overview
+The SmartMirror application is a Python2.7 Flask app that breaks the screen into panels and banners. The application was designed to run on a raspberry pi 2/3 paired with a ~24 inch monitor. Panels and banners are just the section of the screen for the different plugins. For example you can configure the left panel to display the current weather. There are five sections that use a standardized naming convention, see below. I know this restricts the flexibility of the plugin location on the mirror, I am working on a drag and drop feature :smiley:.
+* The top of the screen is called the `top_banner`
+* The left side of the screen is called the `left_panel`
+* The right side of the screen is split into two sections
+    * There's the right top which is a smaller section used for the date/time `right_top_panel`
+    * Then there's the right bottom which is a bit larger `right_bottom_panel`
+* The last section is the bottom which is called the `bottom_banner`
+
+Another common term in this application is `plugin`, these are the different components that can be configured like the weather, news or date/time.
+
+The plugins that the SmartMirror uses are saved in the file config.yml. There are few ways to change the plugins the SmartMirror uses. For the nerds you can use the script smartmirror_setup.py, that will step you through the available plugins and save them to the config.yml. Or you can use the frontend route /setup. If you are running the app locally, install the requirements, execute `python run.py` and :boom: you are up and running. If you installed the app on your raspberry pi using the instructions below, you need to restart the flask app or reboot the pi to see the new plugins.
+
+Read the architecture section for the application details.
 
 ## Requirements
-I've included some links to the parts, but these are only recommendations. You can use cheaper parts, this is just what I had success with.
+Below are some links to the parts, but these are only recommendations! You can use cheaper parts, this is just what I had success with.
 * Currently built for `linux operating systems` only (windows coming soon!)
 * `Designed for a 24 inch monitor`
 * `Python2.7`
 * Basic Flask, Linux and Bash knowledge
-* Raspberry Pi 3 (https://www.amazon.com/gp/product/B01C6Q2GSY/ref=oh_aui_search_detailpage?ie=UTF8&psc=1)
+* Raspberry Pi 2/3 (https://www.amazon.com/gp/product/B01C6Q2GSY/ref=oh_aui_search_detailpage?ie=UTF8&psc=1)
 * Two way mirror (https://www.amazon.com/gp/product/B06Y2JMH7C/ref=oh_aui_detailpage_o00_s01?ie=UTF8&psc=1  )
 * 24 inch in ultra thin monitor (https://www.amazon.com/gp/product/B01HIA63AU/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1)
+* Frame to house the components
 
 ## Raspberry Pi Install
 1. Make sure you change the default password to your pi for security reasons.
