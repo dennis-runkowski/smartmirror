@@ -7,12 +7,12 @@ This tutorial will show you how to create your own smartmirror with a raspberry 
 ![Alt text](img/smartmirror.JPG?raw=true "Smartmirror")
 
 ## Table Of Contents
-- [Getting Started](#Getting Started)
+- [Getting Started](#Getting-Started)
 - [Requirements](#Requirements)
-- [Raspberry Pi Install](#Raspberry Pi Install)
+- [Raspberry Pi Install](#Raspberry-Pi-Install)
 - [Configuring](#Configuring)
 - [Local Setup](#Local Setup)
-- [Local Deployment](#Local Deployment)
+- [Local Deployment](#Local-Deployment)
 - [Updating](#Updating) 
 - [Architecture](#Architecture)
 
