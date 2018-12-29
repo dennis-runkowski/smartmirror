@@ -1,4 +1,4 @@
-![Alt text](img/SmartMirror.JPG?raw=true "Smartmirror")
+![Alt text](img/SmartMirror.jpg?raw=true "Smartmirror")
 `*Work in Progress*`
 
 This tutorial will show you how to create your own smartmirror with a raspberry pi and a two way mirror. The smartmirror is powered by a raspberry pi running a flask application. The application is plugable with customed plugins to fit your needs.
