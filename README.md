@@ -2,8 +2,6 @@
 
 `*Work in Progress*`
 
-This tutorial will show you how to create your own smartmirror with a raspberry pi and a two way mirror. The smartmirror is powered by a raspberry pi running a flask application. Each plugin can be customized to fit you needs.
-
 ![Alt text](img/smartmirror.JPG?raw=true "Smartmirror")
 
 ## Table Of Contents
