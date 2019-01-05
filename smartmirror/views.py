@@ -160,10 +160,14 @@ def save_config():
             if plugin_config:
                 # Build the form field i.e left_panel_api_key
                 for key in plugin_config:
+                    if not config.get(field, False):
+                        config[field] = {}
                     form_config = "{f}_{p}".format(f=field, p=key)
+                    print form_config
                     if form_data.get(form_config, False):
-                        config[field] = {plugin: True}
-                        config[field][plugin] = {key: form_data[form_config]}
+                        if not config[field].get(plugin, False):
+                            config[field] = {plugin: {}}
+                        config[field][plugin][key] = form_data[form_config]
                     else:
                         # Missing field from the form
                         error_message = u"Please fill in the {f} field!".format(

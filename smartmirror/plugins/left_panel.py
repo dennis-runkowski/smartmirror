@@ -3,6 +3,7 @@
 import requests
 import json
 import time
+from datetime import datetime
 
 
 class WunderGround():
@@ -263,7 +264,7 @@ class YahooWeather(object):
         }
         try:
             data = requests.get(self.base_url, params=parameters)
-        except Exception as a:
+        except Exception as e:
             raise e
 
         data_check = data.json().get("query", None)
@@ -309,3 +310,157 @@ class YahooWeather(object):
 
         normalize_text = text.lower()
         return self.conditions.get(normalize_text, "/static/img/icons/Sun.png")
+
+class OpenWeather(object):
+    """
+    Open Weather api
+
+    https://openweathermap.org/api
+
+    This method uses the lon/lat to find the weather for your city.
+    You can look up the coordinates on https://openweather.org
+
+    Attributes:
+        lon (str): Longitude
+        lat (str): Latitude
+        api_key (str): OpenWeather api key
+        logger (obj): logging handle
+    """
+
+    def __init__(self, lon, lat, api_key, logger):
+        """Inits OpenWeather with lon and lat."""
+        self.lon = lon
+        self.lat = lat
+        self.api_key = api_key
+        self.logger = logger
+        self.base_url = "https://api.openweathermap.org/data/2.5/"
+        self.icons = {
+            "01d": "/static/img/icons/Sun.png",
+            "01n": "/static/img/icons/Moon.png",
+            "02d": "/static/img/icons/PartlySunny.png",
+            "02n": "/static/img/icons/PartlyMoon.png",
+            "03d": "/static/img/icons/Cloud.png",
+            "03n": "/static/img/icons/Cloud.png",
+            "04d": "/static/img/icons/PartlySunny.png",
+            "04n": "/static/img/icons/PartlyMoon.png",
+            "09d": "/static/img/icons/Rain.png",
+            "09n": "/static/img/icons/Rain.png",
+            "10d": "/static/img/icons/Rain.png",
+            "10n": "/static/img/icons/Rain.png",
+            "11d": "/static/img/icons/Storm.png",
+            "11n": "/static/img/icons/Storm.png",
+            "13d": "/static/img/icons/Snow.png",
+            "13n": "/static/img/icons/Snow.png",
+            "50d": "/static/img/icons/Haze.png",
+            "50n": "/static/img/icons/Haze.png"
+        }
+
+    def current_weather(self, units="imperial"):
+        """
+        Get the current weather for a location. Units default to imperial for
+        the USA.
+
+        Parameters:
+            units (str): units F=imperial, C=metric , K=standard
+
+        Returns:
+            data (obj): dict containing the current weather
+        """
+        if units != "imperial":
+            if units == "metric":
+                self.logger.info("Using metric.")
+            elif units == "standard":
+                self.logger.info("Using kelvin.")
+            else:
+                self.logger.error("Unknown unit type defaulting to imperial.")
+                units = "imperial"
+
+
+        url = "{b}weather?lat={lat}&lon={lon}&units={units}&appid={api}".format(
+            b=self.base_url,
+            lat=self.lat,
+            lon=self.lon,
+            units=units,
+            api=self.api_key
+        )
+        try:
+            res = requests.get(url)
+        except Exception as e:
+            self.logger.error(e)
+            return {}
+
+        data = res.json()
+        icon = data.get("weather", [""])[0].get("icon", "")
+
+
+        weather = {
+            "temp": data.get("main", {}).get("temp", ""),
+            "location": data.get("name", ""),
+            "icon": self.icons.get(icon,),
+            "description": data.get("weather", [""])[0].get("description", ""),
+            "units": units
+        }
+        return weather
+
+    def forecast(self, type="daily", units="imperial"):
+        """
+        OpenWeather forecast for the next 7 days or hourly.
+
+        Parameters:
+            type (str): hourly or daily weather forecast
+            units (str): units F=imperial, C=metric , K=standard
+
+        Returns:
+             forecast (obj): list containing the weather forecast
+        """
+        if units != "imperial":
+            if units == "metric":
+                self.logger.info("Using metric.")
+            elif units == "standard":
+                self.logger.info("Using kelvin.")
+            else:
+                self.logger.warn("Unknown unit type defaulting to imperial.")
+                units = "imperial"
+
+        if type != "daily":
+            if type == "hourly":
+                self.logger.info("Getting hourly forecast")
+            else:
+                self.logger.warn("Unknown type, using daily default")
+                type = "daily"
+
+        url = "{b}forecast?lat={lat}&lon={lon}&units={u}&appid={api}".format(
+            b=self.base_url,
+            lat=self.lat,
+            lon=self.lon,
+            u=units,
+            api=self.api_key
+        )
+        try:
+            res = requests.get(url)
+        except Exception as e:
+            self.logger.error(e)
+            return {}
+
+        data = res.json()
+        forecast_hourly = []
+        for i in data.get("list", []):
+            temp_icon = i.get("weather", [""])[0].get("icon", "")
+            temp = {
+                "temp_min": i.get("main", {}).get("temp_min", ""),
+                "temp_max": i.get("main", {}).get("temp_max", ""),
+                "temp": i.get("main", {}).get("temp", ""),
+                "description": i.get("weather", [""])[0].get("description", ""),
+                "icon": self.icons.get(temp_icon, ""),
+                "date": i.get("dt_txt")
+            }
+            forecast_hourly.append(temp)
+
+        if units == "hourly":
+            return forecast_hourly
+
+        forecast_daily = []
+        current_date = datetime.now()
+        for i in forecast_hourly:
+            pass
+
