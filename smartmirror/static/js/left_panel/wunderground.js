@@ -17,10 +17,12 @@ callOnInterval(360000, '/left_panel',
        var tableData;
        var for_icon;
        var icon = data["current"]["link"];
+       var location = data["current"]["city"]
        var current_temp = data["current"]["temp_f"];
        if (current_temp !== "Null") {
             $("#weather_icon").attr('src', icon)
             $(current_weather).html(current_temp + " &#8457;")
+            $("#weather_location").html("<i>Weather in " + location + "</i>")
        }
        if (wundergroundData["forecast"][0]["time"] !== "Error") {
             $(weather_table).html("");
