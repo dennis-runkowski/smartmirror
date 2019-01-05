@@ -13,7 +13,7 @@
 	text-align: left;
 	padding-left: 25px;
 }
-.weather_location {
+#weather_location {
 	font-family: "Helvetica";
 	font-size: 32px;
 	text-align: left;
