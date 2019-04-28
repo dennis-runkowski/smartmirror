@@ -14,10 +14,14 @@
     }
   },
   "left_panel": {
-    "yahoo_weather": {
-      "name": "Weather - Yahoo",
+    "open_weather": {
+      "name": "Weather - Open Weather",
       "config_fields": {
-        "woeid": "Location Woeid from Yahoo"
+        "api_key": "Api Key",
+        "lat": "Latitude",
+        "lon": "Longitude",
+        "units": "Imperial or Metric",
+        "type": "Daily or Hourly Forecast"
       }
     },
     "stocks": {

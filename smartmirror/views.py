@@ -1,5 +1,5 @@
 """Main collection of views."""
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 import yaml
 from threading import Thread
@@ -308,25 +308,49 @@ Currently the only plugins available are the following:
 def left_endpoint():
     """Route for the left panel."""
     lp_config = app.config.get("left_panel").keys()[0]
+    creds = app.config.get("left_panel").get(lp_config)
     if lp_config == "wunderground":
-        creds = app.config.get("left_panel").get("wunderground")
         api_key = creds.get("api_key")
         state = creds.get("state")
         zipcode = creds.get("zipcode")
         data = left_panel.WunderGround(api_key, state, zipcode, app.logger)
         return jsonify(data.current_with_forecast())
-    elif lp_config == "yahoo_weather":
-        creds = app.config.get("left_panel").get("yahoo_weather")
-        woeid = creds.get("woeid")
-        data = left_panel.YahooWeather(woeid)
-        weather = {}
-        if data.get_data():
-            weather["conditions"] = data.get_conditions,
-            weather["forecast"] = data.get_forecast[1:5]
+    elif lp_config == "open_weather":
+        api_key = creds.get("api_key")
+        lat = creds.get("lat")
+        lon = creds.get("lon")
+        units = creds.get("units")
+        forecast_type = creds.get("type")
+        open_weather = left_panel.OpenWeather(lon, lat, api_key, app.logger)
 
-        return jsonify(weather)
+        # cache the forecast response with redis
+        cached_data = get_redis_cache(conn, "open_weather_forecast")
+        cached_current = get_redis_cache(conn, "open_weather_current")
+        if cached_data:
+            app.logger.debug('Using cached open weather data!')
+            forecast = cached_data
+        else:
+            forecast = open_weather.forecast(forecast_type, units)
+            cache_data(forecast, conn, "open_weather_forecast", 21600)
+
+        if cached_current:
+            app.logger.debug("Using cached current open weather")
+            current = cached_current
+        else:
+            current = open_weather.current_weather(units)
+            cache_data(current, conn, "open_weather_current", 3600)
+
+
+        data = {
+            "current_weather": current,
+            "forecast": forecast,
+            "type": creds.get("type"),
+            "unit": units
+        }
+        return jsonify(data)
+
+
     elif lp_config == "stock":
-        creds = app.config.get("left_panel").get("stock")
         api_key = creds.get("api_key")
         tickers = creds.get("tickers")
         data = left_panel.StockData(api_key, tickers, app.logger)
@@ -483,8 +507,40 @@ Helper Functions
 def source_template(panel, config):
     """Helper function to determine if a template is needed."""
     if config.get(panel):
-        _config = config.get(panel)
-        template = "{p}/{t}.html".format(p=panel, t=_config.keys()[0])
+        config_ = config.get(panel)
+        template = "{p}/{t}.html".format(p=panel, t=config_.keys()[0])
         return template
     else:
         return False
+
+def get_redis_cache(redis_conn, redis_key):
+    """
+    Get Redis cache data - helper function.
+
+    Parameters:
+        redis_conn (obj): Redis connection object
+        redis_key (str): Name of the redis key
+    Returns:
+         data (obj): cached data from redis
+    """
+    cached_data = redis_conn.get(redis_key)
+    if cached_data:
+        data = json.loads(cached_data)
+    else:
+        data = False
+
+    return data
+
+def cache_data(data, redis_conn, redis_key, cache_timer):
+    """
+    Helper function to cache data in redis
+
+    Parameters:
+        data (obj): Data to cache
+        redis_conn (obj): redis connection
+        redis_key (str): Redis key name
+        cache_timer (int): Redis expiration time in seconds
+    """
+    str_data = json.dumps(data)
+    redis_conn.set(redis_key, str_data)
+    redis_conn.expire(redis_key, cache_timer)

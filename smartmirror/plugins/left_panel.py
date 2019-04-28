@@ -3,7 +3,7 @@
 import requests
 import json
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class WunderGround():
@@ -394,7 +394,7 @@ class OpenWeather(object):
 
 
         weather = {
-            "temp": data.get("main", {}).get("temp", ""),
+            "temp": int(round(data.get("main", {}).get("temp", ""))),
             "location": data.get("name", ""),
             "icon": self.icons.get(icon,),
             "description": data.get("weather", [""])[0].get("description", ""),
@@ -402,12 +402,12 @@ class OpenWeather(object):
         }
         return weather
 
-    def forecast(self, type="daily", units="imperial"):
+    def forecast(self, forecast_type="daily", units="imperial"):
         """
         OpenWeather forecast for the next 7 days or hourly.
 
         Parameters:
-            type (str): hourly or daily weather forecast
+            forecast_type (str): hourly or daily weather forecast
             units (str): units F=imperial, C=metric , K=standard
 
         Returns:
@@ -422,12 +422,12 @@ class OpenWeather(object):
                 self.logger.warn("Unknown unit type defaulting to imperial.")
                 units = "imperial"
 
-        if type != "daily":
-            if type == "hourly":
+        if forecast_type != "daily":
+            if forecast_type == "hourly":
                 self.logger.info("Getting hourly forecast")
             else:
                 self.logger.warn("Unknown type, using daily default")
-                type = "daily"
+                forecast_type = "daily"
 
         url = "{b}forecast?lat={lat}&lon={lon}&units={u}&appid={api}".format(
             b=self.base_url,
@@ -446,21 +446,59 @@ class OpenWeather(object):
         forecast_hourly = []
         for i in data.get("list", []):
             temp_icon = i.get("weather", [""])[0].get("icon", "")
+            # Convert datetime
+            try:
+                date_obj = datetime.strptime(
+                    i.get("dt_txt"), '%Y-%m-%d %H:%M:%S')
+                new_date = date_obj.strftime("%Y-%m-%d %I:%M:%S %p")
+            except:
+                new_date = i.get("dt_txt")
             temp = {
-                "temp_min": i.get("main", {}).get("temp_min", ""),
-                "temp_max": i.get("main", {}).get("temp_max", ""),
-                "temp": i.get("main", {}).get("temp", ""),
+                "temp_min": int(round(i.get("main", {}).get("temp_min", ""))),
+                "temp_max": int(round(i.get("main", {}).get("temp_max", ""))),
+                "temp": int(round(i.get("main", {}).get("temp", ""))),
                 "description": i.get("weather", [""])[0].get("description", ""),
                 "icon": self.icons.get(temp_icon, ""),
-                "date": i.get("dt_txt")
+                "date": new_date
             }
             forecast_hourly.append(temp)
 
-        if units == "hourly":
+        if forecast_type == "hourly":
             return forecast_hourly
 
         forecast_daily = []
-        current_date = datetime.now()
-        for i in forecast_hourly:
-            pass
+        forecast_dates = [datetime.now() + timedelta(days=i) for i in
+                          range(1, 6)]
+        for i in forecast_dates:
+            temp_dt_string = datetime.strftime(i, "%Y-%m-%d")
+            temp_list = []
+            description_count = {}
+            for f in forecast_hourly:
+                if temp_dt_string in f["date"]:
+                    temp_list.append(f["temp"])
+                    if description_count.get(f["description"]):
+                        description_count[f["description"]] += 1
+                    else:
+                        description_count[f["description"]] = 1
+            if not description_count:
+                break
+
+            condition = max(description_count,
+                            key=lambda key: description_count[key])
+            icon = ''
+            for f in forecast_hourly:
+                if f.get("description") == condition:
+                    icon = f.get("icon")
+                    break
+            temp_daily = {
+                "date": temp_dt_string,
+                "description": condition,
+                "temp_high": max(temp_list),
+                "temp_low": min(temp_list),
+                "temp": int(round((sum(temp_list)/len(temp_list)))),
+                "icon": icon
+            }
+            forecast_daily.append(temp_daily)
+
+        return forecast_daily
 

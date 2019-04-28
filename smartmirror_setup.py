@@ -34,7 +34,7 @@ plugin_store = {
     1: "greetings",
     2: "quotes",
     3: "python_tips",
-    4: "yahoo_weather",
+    4: "open_weather",
     5: "stock",
     6: "wunderground",
     7: "time",
@@ -122,19 +122,28 @@ lpanel = grid_setup_error("Left Panel")
 
 if lpanel == 'y':
     print "These are the available plugins for the Left Panel:"
-    print "4. Weather - Yahoo"
+    print "4. Weather - Open Weather"
     print "5. Stock"
     print "6. Weather - Wunderground API required (deprecated)"
     print " "
     _plugin = plugin_selection("left_panel", 4, 7)
 
-    if _plugin == "yahoo_weather":
-        print "You need your location woeid for yahoo weather."
-        print "You can find this in the yahoo url for you city."
-        print "Example: https://www.yahoo.com/news/weather/united-states/lyndhurst/lyndhurst-2443376"
-        woeid = raw_input("Please enter your location woeid:")
-        config_data["left_panel"]["yahoo_weather"] = {
-            "woeid": woeid
+    if _plugin == "open_weather":
+        print "You need an open weather api key and your location (lon/lat)."
+        print "You can use this link to find your city and sign up."
+        print "https://openweathermap.org/"
+        lon = raw_input("Please enter your lon:")
+        lat = raw_input("Please enter your lat:")
+        api_key = raw_input("Please enter your open weather api key:")
+        forecast_type = raw_input(
+            "Do you want an hourly or daily forecast (hourly/daily):")
+        units = raw_input("Do you want to use imperial or metric units (imperial/metric):")
+        config_data["left_panel"]["open_weather"] = {
+            "lon": lon,
+            "lat": lat,
+            "api_key": api_key,
+            "units": units,
+            "type": forecast_type
         }
     elif _plugin == "wunderground":
         print ""
