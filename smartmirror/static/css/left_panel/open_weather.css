@@ -1,0 +1,29 @@
+#weather_table {
+	border: 1px solid white;
+	width: 100%;
+	height: 150px;
+	font-size: 20px;
+}
+#weather_table th {
+	border-right: 1px solid white;
+}
+#current_weather {
+	font-family: "Helvetica"; 
+	font-size: 92px;
+	text-align: left;
+	padding-left: 25px;
+}
+.weather_location {
+	font-family: "Helvetica";
+	font-size: 32px;
+	text-align: left;
+	padding-left: 25px;
+}
+img#weather_icon {
+	width: 150px;
+	height: 150px;
+}
+img#forecast_icon {
+	width: 60px;
+	height: 60px;
+}
