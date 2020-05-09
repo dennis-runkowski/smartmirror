@@ -8,7 +8,8 @@ import yaml
 def create_app():
     """Main app."""
     app = Flask(__name__)
-
+    # use local files
+    app.config['BOOTSTRAP_SERVE_LOCAL'] = True
     # Setup config and logging
     with open("config.yml", 'r') as stream:
         plugin_config = yaml.load(stream)
